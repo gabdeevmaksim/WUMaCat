@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import time
 from astropy.table import Table
 from astropy.coordinates import SkyCoord
 import astropy.units as u
@@ -44,7 +45,9 @@ def gaia_cross_match(input_data,
     username = os.environ.get('GAIA_USERNAME')
     password = os.environ.get('GAIA_PASSWORD')
     full_table_name = f"user_{username}.{table_name}"
-    xmatch_table_name = "xmatch"
+    xmatch_table_name = f"xmatch_{table_name}"
+    max_attempts = 3 # Maximum number of attempts to check for the table
+    wait_time = 3 # Time to wait between attempts in seconds
 
     try:
         if isinstance(input_data, str):  # Input is a filename
@@ -124,6 +127,27 @@ def gaia_cross_match(input_data,
             print(f"Error performing crossmatch: {e}")
             return None
 
+        # Check for the existence of the crossmatch table with time lag
+        for attempt in range(max_attempts):
+            time.sleep(wait_time)
+            try:
+                tables = Gaia.load_tables(only_names=True) # Correct way to list tables
+                for table in tables:
+                    if f"user_{username}.user_{username}.{xmatch_table_name}" == table.get_qualified_name():
+                        print(f"Crossmatch table '{xmatch_table_name}' found after {attempt + 1} attempts.")
+                        break
+                else:
+                    continue # if table isn't found continue the loop
+                break # if table is found break the loop
+            except Exception as e:
+                print(f"Error listing tables: {e}")
+                if attempt < max_attempts -1:
+                    print("Retrying...")
+                continue
+        else:
+            print(f"Error: Crossmatch table '{xmatch_table_name}' not found after {max_attempts} attempts. Something went wrong with crossmatch.")
+            return None
+        
         # Retrieve results
         try:
             query = (f"SELECT c.separation*3600 AS separation_arcsec, a.*, b.* "
@@ -151,5 +175,5 @@ def gaia_cross_match(input_data,
         Gaia.logout()
 
 if __name__ == "__main__":
-    results_from_file = gaia_cross_match("my_objects.csv", radius=5)
+    results_from_file = gaia_cross_match("../data/SP_objects_with_coord.csv", radius=1, output_filename="../data/SP_cross_with_gaia.ecsv")
     

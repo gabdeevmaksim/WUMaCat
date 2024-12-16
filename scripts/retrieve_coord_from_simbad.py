@@ -3,18 +3,17 @@ import pandas as pd
 from astroquery.simbad import Simbad
 import os
 
-def retrieve_coord_from_simbad(input_data, overwrite=True):
+def retrieve_coord_from_simbad(input_data, output_filename=None):
     """
-    Retrieves RA and Dec coordinates from SIMBAD for a list of object names and saves the result.
+    Retrieves RA and Dec coordinates from SIMBAD for a list of object names.
 
     Args:
         input_data (str or pd.DataFrame): Path to a CSV file or a Pandas DataFrame 
-                                         containing object names.
-                                         Must have a column named 'name' (case-insensitive).
-        overwrite (bool): If True, overwrites the input file with the new data. If False, saves to a new file.
+                                         containing object names. Must have a column named 'name' (case-insensitive).
+        output_filename (str, optional): Name of the output file. If provided, the results are saved to this file.
 
     Returns:
-        pd.DataFrame: A Pandas DataFrame with added 'ra' and 'dec' columns, or None if there's an error.
+        pd.DataFrame: A Pandas DataFrame with 'ra' and 'dec' columns, or None if there's an error.
     """
 
     simbad = Simbad()
@@ -46,42 +45,7 @@ def retrieve_coord_from_simbad(input_data, overwrite=True):
         name_col = next(col for col in df.columns if col.lower() == 'name')
         df = df.rename(columns={name_col: 'name'})
 
-        ra_col_exists = 'ra' in df.columns
-        dec_col_exists = 'dec' in df.columns
-
-        # Check if all RA and Dec values are NaN
-        if ra_col_exists and dec_col_exists:
-            ra_dec_empty = df[['ra', 'dec']].isnull().all().all()
-        else:
-            ra_dec_empty = True
-
-        if ra_col_exists and dec_col_exists and not ra_dec_empty:
-             print("RA and Dec columns already exist and are not all empty. Skipping SIMBAD query for filled rows.")
-             objects_to_query = df[df[['ra', 'dec']].isnull().any(axis=1)]
-             if objects_to_query.empty:
-                 return df
-             else:
-                 df_to_query = objects_to_query[['name']]
-                 df_with_coords = retrieve_coord_from_simbad(df_to_query, overwrite=False)
-                 df.update(df_with_coords)
-                 if filepath:
-                     try:
-                         if overwrite:
-                             df.to_csv(filepath, index=False)
-                             print(f"Data saved to {filepath}")
-                         else:
-                             base, ext = os.path.splitext(filepath)
-                             new_filepath = f"{base}_with_coords{ext}"
-                             df.to_csv(new_filepath, index=False)
-                             print(f"Data saved to {new_filepath}")
-                     except Exception as e:
-                         print(f"Error saving to file: {e}")
-                 return df
-
-        df['ra'] = np.nan
-        df['dec'] = np.nan
         object_names = df['name'].tolist()
-
         try:
             query_result = simbad.query_objects(object_names)
         except Exception as e:
@@ -93,30 +57,36 @@ def retrieve_coord_from_simbad(input_data, overwrite=True):
             return None
 
         simbad_df = query_result.to_pandas()
-        merged_df = pd.merge(df, simbad_df[['MAIN_ID', 'RA', 'DEC']], left_on='name', right_on='MAIN_ID', how='left')
 
-        merged_df = merged_df.drop(columns=['MAIN_ID'])
-        merged_df = merged_df.rename(columns={'RA': 'ra', 'DEC': 'dec'})
+        # Ensure SCRIPT_NUMBER_ID is an integer for proper joining
+        simbad_df['SCRIPT_NUMBER_ID'] = simbad_df['SCRIPT_NUMBER_ID'].astype(int)
+
+        # Create a new DataFrame with the index shifted by 1
+        df_with_index = df.reset_index().rename(columns={'index': 'SCRIPT_NUMBER_ID'})
+        df_with_index['SCRIPT_NUMBER_ID'] += 1
+
+        # Merge the DataFrames
+        merged_df = pd.merge(df_with_index, simbad_df[['SCRIPT_NUMBER_ID', 'RA', 'DEC']], on='SCRIPT_NUMBER_ID', how='left')
+
+        merged_df = merged_df.drop(columns=['SCRIPT_NUMBER_ID'])
+
+        # Update original ra and dec columns or create them if they don't exist
+        df['ra'] = merged_df['RA'].rename('ra')
+        df['dec'] = merged_df['DEC'].rename('dec')
 
         if filepath:
             try:
-                if overwrite:
-                    merged_df.to_csv(filepath, index=False)
-                    print(f"Data saved to {filepath}")
-                else:
-                    base, ext = os.path.splitext(filepath)
-                    new_filepath = f"{base}_with_coords{ext}"
-                    merged_df.to_csv(new_filepath, index=False)
-                    print(f"Data saved to {new_filepath}")
+                df.to_csv(output_filename if output_filename else filepath, index=False)
+                print(f"Data saved to {output_filename if output_filename else filepath}")
             except Exception as e:
                 print(f"Error saving to file: {e}")
-        return merged_df
+        return df
 
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
 
 if __name__ == "__main__":
-    df_from_csv_with_coords_no_overwrite = retrieve_coord_from_simbad("../data/only_SP_objects.csv", overwrite=False)
+    df_from_csv_with_coords_no_overwrite = retrieve_coord_from_simbad("../data/only_SP_objects.csv", output_filename="../data/SP_objects_with_coord.csv")
 
     
