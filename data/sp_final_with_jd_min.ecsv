@@ -1,0 +1,578 @@
+# %ECSV 1.0
+# ---
+# datatype:
+# - {name: separation_arcsec, datatype: float64}
+# - name: SOURCE_ID
+#   datatype: int64
+#   description: Unique source identifier (unique within a particular Data Release)
+#   meta: !!omap
+#   - {ucd: meta.id}
+# - name: random_index
+#   datatype: int64
+#   description: Random index for use when selecting subsets
+#   meta: !!omap
+#   - {ucd: meta.code}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right ascension
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+#   - {utype: Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C1}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+#   - {utype: Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C2}
+# - name: parallax
+#   unit: mas
+#   datatype: float64
+#   description: Parallax
+#   meta: !!omap
+#   - {ucd: pos.parallax.trig}
+# - name: parallax_error
+#   unit: mas
+#   datatype: float32
+#   description: Standard error of parallax
+#   meta: !!omap
+#   - {ucd: stat.error;pos.parallax.trig}
+# - name: parallax_over_error
+#   datatype: float32
+#   description: Parallax divided by its standard error
+#   meta: !!omap
+#   - {ucd: stat.snr;pos.parallax.trig}
+# - name: pmra
+#   unit: mas / yr
+#   datatype: float64
+#   description: Proper motion in right ascension direction
+#   meta: !!omap
+#   - {ucd: pos.pm;pos.eq.ra}
+# - name: pmra_error
+#   unit: mas / yr
+#   datatype: float32
+#   description: Standard error of proper motion in right ascension direction
+#   meta: !!omap
+#   - {ucd: stat.error;pos.pm;pos.eq.ra}
+# - name: pmdec
+#   unit: mas / yr
+#   datatype: float64
+#   description: Proper motion in declination direction
+#   meta: !!omap
+#   - {ucd: pos.pm;pos.eq.dec}
+# - name: pmdec_error
+#   unit: mas / yr
+#   datatype: float32
+#   description: Standard error of proper motion in declination direction
+#   meta: !!omap
+#   - {ucd: stat.error;pos.pm;pos.eq.dec}
+# - name: astrometric_params_solved
+#   datatype: int16
+#   description: Which parameters have been solved for?
+#   meta: !!omap
+#   - {ucd: meta.number}
+# - name: pseudocolour
+#   unit: 1 / um
+#   datatype: float32
+#   description: Astrometrically estimated pseudocolour of the source
+#   meta: !!omap
+#   - {ucd: em.wavenumber}
+# - name: pseudocolour_error
+#   unit: 1 / um
+#   datatype: float32
+#   description: Standard error of the pseudocolour of the source
+#   meta: !!omap
+#   - {ucd: stat.error;em.wavenumber}
+# - name: ipd_frac_multi_peak
+#   datatype: int16
+#   description: Percent of successful-IPD windows with more than one peak
+#   meta: !!omap
+#   - {ucd: stat.value}
+# - name: ipd_frac_odd_win
+#   datatype: int16
+#   description: Percent of transits with truncated windows or multiple gate
+#   meta: !!omap
+#   - {ucd: stat.value}
+# - name: ruwe
+#   datatype: float32
+#   description: Renormalised unit weight error
+#   meta: !!omap
+#   - {ucd: stat.error}
+# - name: phot_g_mean_flux_over_error
+#   datatype: float32
+#   description: G-band mean flux divided by its error
+#   meta: !!omap
+#   - {ucd: stat.snr;phot.flux;em.opt}
+# - name: phot_g_mean_mag
+#   unit: mag
+#   datatype: float32
+#   description: G-band mean magnitude
+#   meta: !!omap
+#   - {ucd: phot.mag;em.opt}
+# - name: phot_bp_mean_flux_over_error
+#   datatype: float32
+#   description: Integrated BP mean flux divided by its error
+#   meta: !!omap
+#   - {ucd: stat.snr;phot.flux;em.opt.B}
+# - name: phot_bp_mean_mag
+#   unit: mag
+#   datatype: float32
+#   description: Integrated BP mean magnitude
+#   meta: !!omap
+#   - {ucd: phot.mag;em.opt.B}
+# - name: phot_rp_mean_flux_over_error
+#   datatype: float32
+#   description: Integrated RP mean flux divided by its error
+#   meta: !!omap
+#   - {ucd: stat.snr;phot.flux;em.opt.R}
+# - name: phot_rp_mean_mag
+#   unit: mag
+#   datatype: float32
+#   description: Integrated RP mean magnitude
+#   meta: !!omap
+#   - {ucd: phot.mag;em.opt.R}
+# - name: phot_bp_rp_excess_factor
+#   datatype: float32
+#   description: BP/RP excess factor
+#   meta: !!omap
+#   - {ucd: arith.factor;phot.flux;em.opt}
+# - name: bp_rp
+#   unit: mag
+#   datatype: float32
+#   description: BP - RP colour
+#   meta: !!omap
+#   - {ucd: phot.color;em.opt.B;em.opt.R}
+# - name: radial_velocity
+#   unit: km / s
+#   datatype: float32
+#   description: Radial velocity
+#   meta: !!omap
+#   - {ucd: spect.dopplerVeloc.opt;em.opt.I}
+# - name: radial_velocity_error
+#   unit: km / s
+#   datatype: float32
+#   description: Radial velocity error
+#   meta: !!omap
+#   - {ucd: stat.error;spect.dopplerVeloc.opt;em.opt.I}
+# - name: rv_nb_transits
+#   datatype: int16
+#   description: Number of transits used to compute the radial velocity
+#   meta: !!omap
+#   - {ucd: meta.number}
+# - name: rv_expected_sig_to_noise
+#   datatype: float32
+#   description: Expected signal to noise ratio in the combination of the spectra used to obtain the radial velocity
+#   meta: !!omap
+#   - {ucd: stat.snr}
+# - name: rv_renormalised_gof
+#   datatype: float32
+#   description: Radial velocity renormalised goodness of fit
+#   meta: !!omap
+#   - {ucd: stat.fit.goodness}
+# - name: rv_chisq_pvalue
+#   datatype: float32
+#   description: P-value for constancy based on a chi-squared criterion
+#   meta: !!omap
+#   - {ucd: stat.fit.param}
+# - name: phot_variable_flag
+#   datatype: string
+#   description: Photometric variability flag
+#   meta: !!omap
+#   - {ucd: meta.code;src.var}
+#   - {_votable_string_dtype: char}
+#   subtype: json
+# - name: l
+#   unit: deg
+#   datatype: float64
+#   description: Galactic longitude
+#   meta: !!omap
+#   - {ucd: pos.galactic.lon}
+# - name: b
+#   unit: deg
+#   datatype: float64
+#   description: Galactic latitude
+#   meta: !!omap
+#   - {ucd: pos.galactic.lat}
+# - name: in_qso_candidates
+#   datatype: bool
+#   description: Flag indicating the availability of additional information in the QsoCandidates table
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: in_galaxy_candidates
+#   datatype: bool
+#   description: Flag indicating the availability of additional information in the GalaxyCandidates table
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: non_single_star
+#   datatype: int16
+#   description: Flag indicating the availability of additional information in the various Non-Single Star tables
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_xp_continuous
+#   datatype: bool
+#   description: Flag indicating the availability of mean BP/RP spectrum in continuous representation for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_xp_sampled
+#   datatype: bool
+#   description: Flag indicating the availability of mean BP/RP spectrum in sampled form for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_rvs
+#   datatype: bool
+#   description: Flag indicating the availability of mean RVS spectrum for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_epoch_photometry
+#   datatype: bool
+#   description: Flag indicating the availability of epoch photometry for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_epoch_rv
+#   datatype: bool
+#   description: Flag indicating the availability of epoch radial velocity for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_mcmc_gspphot
+#   datatype: bool
+#   description: Flag indicating the availability of GSP-Phot MCMC samples for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: has_mcmc_msc
+#   datatype: bool
+#   description: Flag indicating the availability of MSC MCMC samples for this source
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: in_andromeda_survey
+#   datatype: bool
+#   description: Flag indicating that the source is present in the Gaia Andromeda Photometric Survey (GAPS)
+#   meta: !!omap
+#   - {ucd: meta.code.status}
+# - name: teff_gspphot
+#   unit: K
+#   datatype: float32
+#   description: Effective temperature from GSP-Phot Aeneas best library using BP/RP spectra
+#   meta: !!omap
+#   - {ucd: phys.temperature.effective}
+# - name: logg_gspphot
+#   unit: log(cm.s**-2)
+#   datatype: float32
+#   description: Surface gravity from GSP-Phot Aeneas best library using BP/RP,spectra
+#   meta: !!omap
+#   - {ucd: phys.gravity}
+# - name: mh_gspphot
+#   unit: dex
+#   datatype: float32
+#   description: Iron abundance from GSP-Phot Aeneas best library using BP/RP spectra
+#   meta: !!omap
+#   - {ucd: phys.abund.Z}
+# - name: distance_gspphot
+#   unit: pc
+#   datatype: float32
+#   description: Distance from GSP-Phot Aeneas best library using BP/RP spectra
+#   meta: !!omap
+#   - {ucd: pos.distance;pos.eq}
+# - name: ag_gspphot
+#   unit: mag
+#   datatype: float32
+#   description: Extinction in G band from GSP-Phot Aeneas best library using BP/RP spectra
+#   meta: !!omap
+#   - {ucd: phys.absorption;em.opt}
+# - name: ebpminrp_gspphot
+#   unit: mag
+#   datatype: float32
+#   description: Reddening $E(G_{\rm BP} - G_{\rm RP})$ from GSP-Phot Aeneas best library using BP/RP spectra
+#   meta: !!omap
+#   - {ucd: phot.color.excess}
+# - name: my_table_oid
+#   datatype: int32
+#   description: Object Identifier
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: name
+#   datatype: string
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+#   - {_votable_string_dtype: unicodeChar}
+#   subtype: json
+# - name: Bibcode
+#   datatype: string
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+#   - {_votable_string_dtype: unicodeChar}
+#   subtype: json
+# - name: Type
+#   datatype: string
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+#   - {_votable_string_dtype: unicodeChar}
+#   subtype: json
+# - name: ET
+#   datatype: int64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: P
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: dPdt
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: Pc
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: BibcodeP
+#   datatype: string
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+#   - {_votable_string_dtype: unicodeChar}
+#   subtype: json
+# - name: Solver
+#   datatype: string
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+#   - {_votable_string_dtype: unicodeChar}
+#   subtype: json
+# - name: q
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: QT
+#   datatype: string
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+#   - {_votable_string_dtype: unicodeChar}
+#   subtype: json
+# - name: i
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: a
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: Omega
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: f
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: r1p
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: r2p
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: T1
+#   datatype: int64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: T2
+#   datatype: int64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: M1
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: M2
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: R1
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: R2
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: L1
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: L2
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: L3
+#   datatype: int64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: d
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: Age
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: Spots
+#   datatype: int64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: ra_2
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - name: dec_2
+#   datatype: float64
+#   meta: !!omap
+#   - {ucd: None}
+#   - {utype: None}
+# - {name: jd_min, datatype: string, subtype: json}
+# schema: astropy-2.0
+separation_arcsec SOURCE_ID random_index ra dec parallax parallax_error parallax_over_error pmra pmra_error pmdec pmdec_error astrometric_params_solved pseudocolour pseudocolour_error ipd_frac_multi_peak ipd_frac_odd_win ruwe phot_g_mean_flux_over_error phot_g_mean_mag phot_bp_mean_flux_over_error phot_bp_mean_mag phot_rp_mean_flux_over_error phot_rp_mean_mag phot_bp_rp_excess_factor bp_rp radial_velocity radial_velocity_error rv_nb_transits rv_expected_sig_to_noise rv_renormalised_gof rv_chisq_pvalue phot_variable_flag l b in_qso_candidates in_galaxy_candidates non_single_star has_xp_continuous has_xp_sampled has_rvs has_epoch_photometry has_epoch_rv has_mcmc_gspphot has_mcmc_msc in_andromeda_survey teff_gspphot logg_gspphot mh_gspphot distance_gspphot ag_gspphot ebpminrp_gspphot my_table_oid name Bibcode Type ET P dPdt Pc BibcodeP Solver q QT i a Omega f r1p r2p T1 T2 M1 M2 R1 R2 L1 L2 L3 d Age Spots ra_2 dec_2 jd_min
+0.037680004178969856 249570280308984064 1622306899 56.25519140510628 49.61663343214825 6.111901657735821 0.050928842 120.00865 -2.251562511562099 0.04573204 0.7372776571751317 0.04408549 31 "" "" 0 0 2.6297011 252.64876 9.443099 79.65197 9.712326 82.58736 8.997872 1.2002622 0.7144537 "" "" "" "" "" "" """VARIABLE""" 149.43686536316739 -4.10898445904468 False False 1 True True False True False True True False 5997.415 3.9276 -0.6724 161.1862 0.0373 0.0202 1 """1SWASP J034501.24+493659.9""" """2019AJ....157...73K""" """W""" 0 0.376532 "" "" """""" """PHOEBE""" 0.421 """SP""" 60.3 2.135 2.656056 0.249087 0.440298 0.298638 6494 6514 0.654 0.275 1.012 0.693 1.632 0.775 0 "" 3.202 1 56.25520666666666 49.61663 4589.567499999888
+0.20762885588987845 1019985089906439040 1761375587 142.54546425395378 53.64948546744345 14.262458045077855 0.016456261 866.68884 -0.7370973456939938 0.017076803 -12.996877433262942 0.013731234 95 1.443923 0.0031377873 0 0 1.0800538 64.786156 10.814138 12.117074 10.972323 10.813717 9.668415 1.8361032 1.3039083 "" "" "" "" "" "" """VARIABLE""" 162.9001623170339 44.75797513343282 False False 0 False False False True False False True False "" "" "" "" "" "" 2 """1SWASP J093010.78+533859.5""" """2015A&A...578A.103L""" """A""" 1 0.227713 "" "" """""" """PHOEBE""" 0.397 """SP""" 86.0 1.668 2.63 0.173211 0.441155 0.29018 4700 4700 0.86 0.34 0.79 0.52 0.27 0.12 1 "" "" 1 142.54546958333333 53.649543055555554 4589.567499999888
+0.1883870057415375 6334708463860687232 1136576191 227.09499882347185 -5.7102561525326445 4.356722088361565 0.014589503 298.6203 11.621957975737054 0.015345534 -1.4962698924474247 0.013819396 31 "" "" 0 0 1.1036819 61.251274 12.44147 20.221647 12.889073 20.626501 11.792658 1.2453401 1.0964155 2.599747 36.50707 11 21.940765 44.91705 0.0 """VARIABLE""" 353.298681333374 43.37426373981018 False False 0 True True False True False True True False 4901.485 4.4055 -0.641 228.4244 0.0064 0.0034 3 """1SWASP J150822.80-054236.9""" """2014A&A...563A..34L""" """A""" 1 0.2600604 "" "" """""" """PHOEBE""" 0.51 """SP""" 90.0 2.01 2.845 0.164556 0.421059 0.310057 4500 4500 1.07 0.55 0.9 0.68 0.298 0.17 0 "" "" 1 227.09494666666663 -5.710249444444445 4589.567499999888
+0.28692152552833616 1203578449136931456 755148231 240.48351955810216 20.472725480054056 3.3324942936908974 0.015817184 210.68822 4.714233498658066 0.01176368 17.29187150316202 0.01305482 31 "" "" 0 0 1.0389602 117.29071 13.905959 36.808838 14.536846 40.106915 13.124613 1.2700862 1.4122334 "" "" "" "" "" "" """VARIABLE""" 34.86554288009995 46.17381958108854 False False 0 True True False True False True True False 4645.355 4.5728 0.4845 297.195 0.0687 0.0357 4 """1SWASP J160156.04+202821.6""" """2014A&A...563A..34L""" """A""" 0 0.22652935 "" "" """""" """PHOEBE""" 0.67 """SP""" 79.5 1.76 3.14 0.129425 0.397246 0.330768 4500 4500 0.86 0.57 0.75 0.63 0.207 0.146 0 "" "" 1 240.48349708333328 20.472648611111108 4589.567499999888
+0.03755641469401188 821434970926235904 1717174294 146.7470198361815 45.76565290885806 3.087321091695823 0.015929021 193.81738 -0.10229942138026138 0.014545204 -2.381050132129328 0.0132607315 31 "" "" 1 0 0.8439553 145.46185 11.14958 51.34386 11.429403 53.76164 10.607655 1.2538517 0.82174873 "" "" "" "" "" "" """VARIABLE""" 173.24834584067045 49.210159678405475 False False 0 True True False True False False True False "" "" "" "" "" "" 6 """AA UMa""" """2011PASP..123...34L""" """W""" 0 0.4681348 0.004044 28.2 """""" """WD""" 0.551 """SP""" 79.61 3.44 2.925511 0.143285 0.413803 0.315229 5920 5964 1.61 0.89 1.53 1.17 2.57 1.55 0 351.0 2.749 1 146.74702041666666 45.765663333333336 4589.567499999888
+0.18024343060699421 1587269421243711872 186028698 224.11801578527417 46.36227591054713 6.43435163219564 0.014867862 432.76913 -8.18155125735551 0.014130925 7.758879103178343 0.01610326 31 "" "" 0 0 1.1266297 130.58736 10.097106 40.364376 10.430006 43.0826 9.600495 1.1987678 0.8295107 "" "" "" "" "" "" """VARIABLE""" 79.26137084249709 58.76233985536802 False False 0 True True False True False True True False 5882.094 4.2227 -0.063 154.9958 0.0022 0.0012 8 """AC Boo""" """2010IBVS.5951....1N""" """W""" 1 0.352432 0.072835 "" """""" """WD""" 0.299 """SP""" 86.3 2.43 2.456287 0.046157 0.457862 0.262897 6241 6250 1.2 0.36 1.19 0.69 1.94 0.65 1 182.0 4.134 1 224.11806833333333 46.36224138888889 4589.567499999888
+0.36856349010947337 4985326015445428608 1432141507 19.1586086914102 -39.70860129405919 5.108696465586478 0.017824175 286.61615 -3.1046684645146123 0.012030788 22.89412589268145 0.012399074 95 1.5679712 0.002868039 0 0 1.1424412 200.82979 10.305867 65.23823 10.613551 69.795166 9.8247595 1.2018797 0.78879166 "" "" "" "" "" "" """VARIABLE""" 281.93520311600446 -76.3748999698068 False False 0 True True False True False True True False 6159.5957 4.3218 0.5749 194.9309 0.0015 0.0008 9 """AD Phe""" """2017AJ....154..260P""" """A""" 0 0.37992361 "" 56.2 """""" """WD""" 0.376 """SP""" 76.05 2.46 2.591 0.163683 0.444945 0.285411 6155 5835 1.004 0.378 1.17 0.76 1.764 0.601 0 "" 6.27 0 19.158626249999998 -39.70870277777778 4589.567499999888
+0.2944665379416629 3919939238568799616 906036102 180.2645876427815 13.008253816943036 3.956442874944082 0.06205543 63.75659 -2.739963941488764 0.05652227 -18.25521366361493 0.038385253 31 "" "" 0 0 2.4565508 129.0022 8.59756 41.759983 8.709779 44.33417 8.313745 1.200693 0.39603424 "" "" "" "" "" "" """VARIABLE""" 260.6039851969774 71.60799375662073 False False 0 True True False True False True True False 6865.178 3.626 -1.4288 240.3501 0.0019 0.001 10 """AG Vir""" """2011AN....332..607P""" """A""" 1 0.64265059 "" "" """""" """ROCHE""" 0.341 """SP""" 84.4 4.477 2.519977 0.167 0.452628 0.277915 8150 6915 2.179 0.739 2.185 1.356 19.0 3.85 1 "" 2.252 0 180.26459999999997 13.008334722222223 4589.567499999888
+0.2820915055107108 3432822846931027200 355276397 96.52061352840926 27.99896685056124 4.011817448641773 0.03619344 110.84377 14.15596111753763 0.046064068 -10.517029333552502 0.030534351 31 "" "" 0 0 1.8261942 117.81359 10.194784 37.764202 10.520786 39.498917 9.710057 1.1949301 0.810729 "" "" "" "" "" "" """VARIABLE""" 185.15347804599855 7.3137636195269025 False False 1 True True False True False True True False 5980.7686 3.9883 0.1238 245.1387 0.0024 0.0013 11 """AH Aur""" """2005AcA....55..123G""" """W""" 1 0.4941085 -0.021522 "" """2016PASP..128d4202Y""" """WD""" 0.165 """SP""" 76.1 3.29 2.064 0.746272 0.521459 0.244411 6200 6418 1.674 0.283 1.897 0.837 4.729 1.09 0 "" 2.529 0 96.52054208333332 27.999013333333334 4589.567499999888
+0.8563923625228468 4546891252744542976 1023751118 258.49104966422766 16.349962453725386 9.558610950887093 0.016591726 576.10706 25.47111723836022 0.014587154 -47.08554608363306 0.015556569 31 "" "" 0 0 0.961486 163.15395 8.470885 53.042927 8.722449 56.01208 8.05107 1.1948712 0.6713791 "" "" "" "" "" "" """VARIABLE""" 37.510866714041065 28.732599055495037 False False 0 True True False True False True True False 6216.927 4.0291 -0.4501 104.2891 0.0039 0.0021 13 """AK Her""" """2014AJ....148..126C""" """A""" 1 0.421523 "" "" """""" """DC""" 0.277 """SP""" 81.7 2.73 2.3572 0.331968 0.474619 0.268929 6500 6180 1.2 0.34 1.4 0.8 3.02 0.82 1 "" 4.585 1 258.4909316666666 16.350171666666668 4589.567499999888
+0.5628213856322525 3867724225935158656 403733383 165.5452991133896 9.895035272269201 8.036942607699938 0.020004192 401.7629 -11.863889260725651 0.019479016 -33.15877484241125 0.01578916 31 "" "" 0 0 1.0342268 67.59953 9.305829 20.783688 9.609559 22.029558 8.92919 1.1437291 0.6803694 "" "" "" "" "" "" """VARIABLE""" 241.504114020824 59.02061079161722 False False 4 False False False True False True True False 6325.186 4.2966 -0.1299 123.9344 0.0022 0.0012 14 """AM Leo""" """2016AstBu..71...64G""" """W""" 1 0.3658005 "" "" """""" """WD""" 0.44 """SP""" 89.0 2.6 2.699 0.224054 0.435614 0.30107 5942 6273 1.23 0.54 1.22 0.85 1.666 1.004 1 "" 3.846 1 165.54535249999998 9.895182499999999 4589.567499999888
+0.4374281111077996 272148682866814208 1749866436 67.05696468974851 53.04557918720169 6.72477995587336 0.015639037 429.99963 13.76552733016409 0.017791718 -23.675715308915144 0.013871114 95 1.5265341 0.0030819261 0 0 1.0147651 155.20496 10.406006 48.331882 10.794485 51.828587 9.844246 1.213263 0.9502392 "" "" "" "" "" "" """VARIABLE""" 152.15587238852032 2.9455379394914134 False False 0 True True False True False False True False 5345.9917 4.2738 -0.1196 147.9004 0.0316 0.0168 15 """AO Cam""" """2004AcA....54..195B""" """W""" 0 0.32990441 -0.010886 7.63 """2010AJ....139..195Y""" """WD""" 0.435 """SP""" 76.0 2.353 2.702174 0.17497 0.434149 0.297572 5590 6200 1.119 0.486 1.092 0.732 1.045 0.711 0 "" 4.809 1 67.05686291666666 53.04568416666667 4589.567499999888
+0.2779925869995513 2566344805920050176 1642582767 20.264768073345746 7.6060663616765165 7.503548189932613 0.02081785 360.43817 -10.527639695912079 0.023169914 13.817903038581484 0.020567672 31 "" "" 0 0 0.9224578 151.22763 8.574551 51.73166 8.814957 54.13689 8.161632 1.1968902 0.6533251 "" "" "" "" "" "" """VARIABLE""" 135.65109333187073 -54.53253113352856 False False 0 True True False True False True True False 6285.8247 4.0319 0.1359 132.6101 0.001 0.0005 17 """AQ Psc""" """2011MNRAS.412.1787D""" """A""" 0 0.47560744 "" 23.9 """2020MNRAS.491.6065Z""" """WD""" 0.226 """SP""" 69.06 3.253 2.253 0.301475 0.487833 0.252135 6250 6024 1.661 0.375 1.708 0.891 3.987 0.937 1 "" 4.36 0 20.264815 7.606004722222222 4589.567499999888
+0.4974639406599876 4689821167286415744 852952724 4.340060260610314 -71.91583677033809 2.7763744413703297 0.011813407 235.01895 29.30692858506477 0.013237169 -10.321342201436815 0.015354272 31 "" "" 0 0 0.96928215 122.60477 10.040425 41.654533 10.215946 41.251675 9.696323 1.1948661 0.5196228 "" "" "" "" "" "" """VARIABLE""" 306.65845894176937 -44.96502387417426 False False 4 True True False True False False True False "" "" "" "" "" "" 18 """AQ Tuc""" """2001CoSka..31....5C""" """W""" 0 0.5948421 "" "" """""" """WD""" 0.354 """SP""" 75.89 "" 2.5028 0.36645 0.458503 0.290295 6900 7048 "" "" 2.03 1.3 8.386 3.744 0 "" "" 0 4.339640416666666 -71.91579083333333 4589.567499999888
+0.9565601261427542 1218233805261820288 843571692 239.20595487813128 22.266890417997132 6.140242506236828 0.014227835 431.56546 -34.29427305730098 0.010823429 -49.07161476024593 0.012003396 31 "" "" 0 0 1.0690465 107.02971 10.913328 39.0228 11.319856 40.609505 10.230707 1.2880542 1.0891485 -43.204643 19.738825 31 113.257774 144.7209 0.0 """VARIABLE""" 36.857240555021974 47.84431111840153 False False 0 True True False True False False True False "" "" "" "" "" "" 19 """AU Ser""" """2018IBVS.6256....1A""" """A""" 0 0.386497 -0.010195 31.36 """""" """PHOEBE""" 0.692 """SP""" 82.43 2.52 3.213 0.0406 0.389384 0.328141 5140 4986 0.85 0.59 1.04 0.88 0.675 0.427 0 164.0 "" 1 239.20611916666664 22.267108333333333 4589.567499999888
+0.5284977514307162 2737141804011885952 1799831739 335.73715967469684 16.324305590795618 4.298111457931053 0.017935164 239.64719 24.095283859092035 0.028458407 -22.597997950979213 0.027780171 31 "" "" 0 0 0.9357484 69.765175 11.031339 22.518583 11.321458 24.269741 10.48959 1.2484491 0.8318682 "" "" "" "" "" "" """VARIABLE""" 78.89877402605845 -33.56330065745031 False False 0 True True False True False True True False 5525.075 4.1648 -1.0973 230.4747 0.091 0.0496 21 """BB Peg""" """2020NewA...7801354K""" """W""" 1 0.361502127 -0.000251 35.17 """""" """PHOEBE""" 0.318 """SP""" 83.9 2.52 2.413403 0.470753 0.470516 0.286494 6121 6355 1.24 0.41 1.25 0.79 1.969 0.914 0 "" 3.377 1 335.73704791666665 16.324405833333334 4589.567499999888
+0.46939188270460347 1354723983279632000 1419808608 255.34092977468856 42.16376341609539 7.806173086981417 0.012363614 631.3828 -18.33013446639539 0.014625669 -22.964811200078007 0.01538971 31 "" "" 0 0 1.2290633 107.57916 9.401396 35.99135 9.696913 36.879387 8.93339 1.2001718 0.7635231 "" "" "" "" "" "" """VARIABLE""" 66.80253390548539 37.65302700646422 False False 6 True True False True False False True False "" "" "" "" "" "" 22 """BD +42 2782""" """2007AJ....133..255L""" """W""" 0 0.37015158 "" "" """""" """WD""" 0.482 """SP""" 74.0 2.75 2.7328 0.374802 0.436482 0.316991 5850 6039 1.38 0.67 1.29 0.95 1.75 1.05 1 "" 3.619 1 255.3410395833333 42.163865277777774 4589.567499999888
+0.126894988446114 428237896170920576 725748684 5.3391214431088265 59.15152708103504 2.269149584032583 0.011081411 204.77083 6.0391711836288025 0.010296133 5.092387985505272 0.011301416 31 "" "" 1 0 0.96499395 159.65697 12.561617 54.829815 13.0344095 56.76416 11.940841 1.214822 1.0935688 "" "" "" "" "" "" """VARIABLE""" 119.07670064600049 -3.4948670571384226 False False 0 True True False True False True True False 6063.8335 4.2809 0.4149 437.1502 0.6033 0.3198 23 """BH Cas""" """2019PASP..131h4202L""" """W""" 0 0.40589171 0.028253 20.09 """""" """WD""" 0.475 """SP""" 70.91 2.593 2.783 0.155989 0.42625 0.303772 4874 5163 0.96 0.46 1.19 0.85 0.703 0.456 1 441.0 6.044 1 5.339068749999999 59.15150444444444 4589.567499999888
+0.2602573466906583 1516514611046233344 574034163 195.81834466113793 36.61677558276894 4.519490759654988 0.043576546 103.71384 -4.970173170449127 0.028303469 -15.533104924562316 0.033334147 31 "" "" 0 0 2.80415 171.589 10.287889 55.24266 10.589176 60.34533 9.8202715 1.1970115 0.7689047 "" "" "" "" "" "" """VARIABLE""" 108.8640098579552 80.18601064807406 False False 0 True True False True False False True False "" "" "" "" "" "" 24 """BI CVn""" """2014NewA...29...57N""" """W""" 0 0.38421 "" "" """""" """WD""" 0.413 """SP""" 71.01 2.921 2.62629 0.309188 0.444608 0.300183 6093 6170 1.61 0.66 1.4 0.96 2.44 1.19 0 "" 3.66 1 195.81837208333332 36.616844444444446 4589.567499999888
+0.5886287945562936 106993102837561088 179826480 32.28245197933761 26.48514977031299 8.363663504263437 0.048377614 172.88292 4.166796220832673 0.055438694 -36.59611031667336 0.04953328 31 "" "" 0 0 2.645325 73.26821 10.419666 21.817514 10.865603 24.088184 9.817436 1.2139446 1.0481672 "" "" "" "" "" "" """VARIABLE""" 143.77412238554462 -33.22282834766913 False False 4 True True False True False False True False 5498.4116 4.3215 0.1735 118.9947 0.2745 0.1457 25 """BN Ari""" """2018AcA....68..159A""" """W""" 1 0.299376 0.046829 7.44 """""" """PHOEBE""" 0.392 """SP""" 83.52 2.14 2.630775 0.125475 0.440064 0.286783 5170 5278 1.054 0.413 0.988 0.645 0.69 0.268 0 123.0 7.562 1 32.282431249999995 26.485312222222223 4589.567499999888
+0.21357204450028505 1498613634033133184 1013089156 209.7840374113593 40.81922987971502 3.3836944367231006 0.022595331 149.75192 0.42156319540446496 0.01605761 -13.374464845282311 0.022026556 95 1.6399032 0.004132658 0 0 1.0374254 170.19867 9.719649 55.37996 9.90993 55.408447 9.451794 1.1473444 0.45813656 "" "" "" "" "" "" """VARIABLE""" 81.72927610270784 70.4612371085993 False False 0 True True False True False True True False 7650.5347 4.155 -0.0235 294.4749 0.1413 0.0753 27 """BO CVn""" """2012NewA...17..673Z""" """W""" 1 0.5174629 0.015811 "" """""" """WD""" 0.34 """SP""" 89.4 3.14 2.3796 0.82537 0.482309 0.310613 6980 7191 1.16 0.39 1.62 1.0 5.53 2.38 1 "" 1.612 0 209.7840345833333 40.81928916666667 4589.567499999888
+0.20792335245806842 345119558747024512 385560386 32.26431313726393 40.794175657344454 5.564307993213489 0.021627635 257.27768 9.84574567049797 0.022760225 -8.424517751710404 0.024166193 31 "" "" 0 0 1.0857524 108.69615 8.873359 39.327747 9.090745 39.497593 8.48602 1.1950076 0.6047249 "" "" "" "" "" "" """VARIABLE""" 138.4304489721872 -19.729960473463198 False False 0 False False False True False True True False 6835.765 3.9884 -0.1493 178.6799 0.1804 0.0967 31 """BX And""" """2010AcA....60..305S""" """A""" 0 0.6101124 "" "" """""" """WD""" 0.455 """SP""" 75.86 4.424 2.776 0.04485 0.424244 0.294638 6650 4758 2.148 0.977 2.01 1.4 7.08 0.9 0 "" "" 1 32.264255 40.79421305555555 4589.567499999888
+0.23874103884366035 1629262759606566656 1592046761 241.57225621248182 62.76284757316144 1.9220787914988657 0.01733022 110.90908 -10.956468761325851 0.023189304 10.090151687793771 0.019727878 95 1.6366105 0.004959674 0 0 0.85610163 135.30054 10.728898 45.751698 10.875758 48.017628 10.421905 1.191952 0.4538536 "" "" "" "" "" "" """VARIABLE""" 95.1802563364275 42.39136378694985 False False 0 True True False True False True True False 7613.455 4.0977 0.1659 517.6199 0.1407 0.0748 32 """BX Dra""" """2013PASJ...65....1P""" """A""" 1 0.57902479 0.048816 30.2 """""" """WD""" 0.288 """SP""" 81.8 4.058 2.3308 0.604006 0.482756 0.284325 6980 6758 2.08 0.6 2.13 1.28 9.66 3.05 0 "" 2.323 1 241.57236249999997 62.7628025 4589.567499999888
+0.2511745135060306 1800400576239988224 1044224355 324.70584005721787 26.692779439285594 6.696232344612121 0.025296723 264.7075 8.822862152264992 0.022874933 -12.963979663305356 0.016640674 31 "" "" 0 0 1.6663352 118.597046 11.015691 39.194508 11.367433 42.292717 10.37996 1.2805024 0.98747253 "" "" "" "" "" "" """VARIABLE""" 78.19007772220931 -19.004076714621394 False False 0 True True False True False False True False "" "" "" "" "" "" 33 """BX Peg""" """2015NewA...41...17L""" """W""" 1 0.280422 -0.017885 57.8 """""" """WD""" 0.376 """SP""" 87.0 2.017 2.588271 0.175006 0.445462 0.285935 5300 5887 1.02 0.38 0.966 0.623 0.658 0.324 0 "" 7.751 1 324.7057958333333 26.692836944444444 4589.567499999888
+0.5832048528652004 380329082164174848 1425346183 5.1272088917434875 40.22589960439271 4.93993405755595 0.016657507 296.55905 -8.491167690024719 0.012439886 -35.51255276264778 0.008170921 31 "" "" 0 0 1.0012897 206.4654 9.658255 67.659836 9.919838 79.58374 9.243492 1.1867108 0.6763458 "" "" "" "" "" "" """VARIABLE""" 116.55898305947825 -22.262813911890888 False False 0 True True False True False True True True 6287.7573 4.0404 0.0601 201.0666 0.0298 0.016 36 """CN And""" """2019RAA....19...10Y""" """A""" 0 0.4627894 -0.01296 37.0 """""" """WD""" 0.387 """SP""" 67.8 3.14 2.651 0.001956 0.435504 0.280117 6350 5732 1.4 0.55 1.45 0.94 3.41 0.93 0 201.0 6.052 1 5.127257916666665 40.226057222222224 4589.567499999888
+0.12274017575783427 4871145409392265088 23659673 67.35335169667594 -33.57620766355687 2.6064704652677615 0.01586317 164.30954 7.655464143242221 0.015330107 -0.35701643056785715 0.0197815 31 "" "" 1 0 1.148927 121.59919 10.283531 40.19508 10.466856 41.811028 9.9749565 1.1718444 0.4918995 25.304562 12.860421 24 100.51994 73.780945 0.0 """VARIABLE""" 234.75285921826512 -43.06537591444607 False False 0 True True True True False False True False "" "" "" "" "" "" 38 """CT Eri""" """2011MNRAS.412.1787D""" """A""" 0 0.634196 "" "" """""" """WD""" 0.3 """SP""" 69.4 3.987 2.337 0.690826 0.483806 0.292082 6881 5086 1.623 0.487 2.093 1.3 8.801 1.013 0 "" 4.911 0 67.35331083333332 -33.57620583333334 4589.567499999888
+0.17041098768556837 6301100722726138112 1695496960 212.36433383101124 -15.58157795095467 2.5523747288505527 0.016725618 152.60272 -4.769594140620409 0.018057179 9.547709278867218 0.015797239 31 "" "" 0 0 1.1021513 80.57024 10.391477 30.953611 10.598843 32.906784 9.918699 1.2497458 0.68014336 "" "" "" "" "" "" """VARIABLE""" 329.15034174065215 43.28294620013348 False False 0 True True False True False False True False "" "" "" "" "" "" 39 """CX Vir""" """2010AcA....60..305S""" """A""" 1 0.74608003 "" "" """""" """WD""" 0.343 """SP""" 83.33 4.584 2.5146 0.211586 0.454073 0.280404 6450 4694 1.731 0.594 2.24 1.39 7.78 0.84 1 "" 7.57 1 212.36435583333332 -15.581620277777777 4589.567499999888
+0.559723012157159 1950492606448789120 1644719135 323.7609682754047 34.59585281578807 2.586526192329709 0.03134754 82.5113 -28.517351879888547 0.021556636 -20.33404384715255 0.025910148 31 "" "" 0 0 1.9735271 152.31906 10.583573 53.23021 10.746319 53.690678 10.223676 1.2106384 0.5226431 "" "" "" "" "" "" """VARIABLE""" 83.29423370653163 -12.755379816231384 False False 0 True True False True False False True False "" "" "" "" "" "" 40 """DK Cyg""" """2015AJ....149..194L""" """A""" 1 0.470690658 0.008631 78.1 """""" """WD""" 0.307 """SP""" 82.75 3.4 2.396 0.448098 0.472059 0.282393 7500 7011 1.82 0.56 1.74 1.05 8.5 2.4 0 366.0 2.676 1 323.7611220833333 34.59594305555556 4589.567499999888
+0.073078390495649 3728971527866756096 1566337035 207.92517582056655 14.301671766764601 2.2068352611718924 0.021382533 103.20738 -0.6966968650659895 0.024707021 4.481688702622521 0.016417924 31 "" "" 0 0 0.98920184 250.4594 11.11859 80.668304 11.328224 86.06847 10.740514 1.1941518 0.5877104 "" "" "" "" "" "" """VARIABLE""" 353.54216710984633 70.97988620271263 False False 0 True True False True False True True False 6441.672 4.0409 -0.3367 444.3475 0.0031 0.0017 41 """DN Boo""" """2008NewA...13..468S""" """A""" 0 0.447568 "" "" """""" """WD""" 0.103 """SP""" 60.02 2.863 1.925 0.644197 0.545089 0.207125 6095 6071 1.428 0.148 1.71 0.67 3.75 0.56 0 "" 4.616 0 207.92517875 14.301651666666668 4589.567499999888
+0.33386580261111415 500972789364298112 1502266580 70.6924194671246 72.97824463275433 6.388512548320101 0.0203758 313.53433 -16.98746360348389 0.014792413 -12.20285359151422 0.019892829 31 "" "" 0 0 0.95099026 131.50275 8.317781 42.139454 8.490841 44.31316 8.005604 1.1795217 0.48523712 "" "" "" "" "" "" """VARIABLE""" 137.9744132889928 17.295810144395187 False False 6 True True False True False False True False "" "" "" "" "" "" 42 """DN Cam""" """2004AcA....54..195B""" """W""" 0 0.4983092 "" "" """""" """WD""" 0.442 """SP""" 73.1 3.668 2.632301 0.49071 0.448712 0.316049 6530 6700 1.849 0.818 1.775 1.224 5.143 2.711 0 "" 2.426 0 70.69267708333334 72.97829861111111 4589.567499999888
+0.27072421609298336 1491982032729435520 12993865 215.5738781256331 41.45053626135794 2.799411430753683 0.015538253 180.16257 9.701689246311613 0.011961165 -13.84603087984763 0.015151655 31 "" "" 0 0 0.9628971 199.57172 8.691793 63.160263 8.820705 66.63922 8.435709 1.1769279 0.3849964 "" "" "" "" "" "" """VARIABLE""" 76.35194036209778 66.5175709403136 False False 2 True True False True False True True False 7409.365 3.6751 -0.0029 354.9135 0.0024 0.0013 43 """DU Boo""" """2013AJ....145...80D""" """A""" 1 1.055885 "" "" """""" """DC""" 0.234 """SP""" 81.0 5.97 2.24 0.508353 0.49259 0.262957 7850 7610 2.08 0.487 3.19 1.74 34.694 9.116 1 "" 1.028 1 215.57382041666665 41.45059777777778 4589.567499999888
+0.7187330128621667 6485801565043224448 1767283370 359.33978228374684 -64.2434214089366 6.356793627421925 0.011057277 574.89685 10.663170314714042 0.01081161 -43.56855784193676 0.011515339 31 "" "" 0 0 0.8912049 205.24226 9.514597 66.442116 9.78269 73.412636 9.087765 1.1901984 0.6949253 31.923231 12.280538 23 154.12146 84.31338 0.0 """VARIABLE""" 312.4037313530707 -51.878866222744286 False False 0 True True True True False True True False 6249.874 4.1954 0.0458 156.9855 0.0256 0.0137 44 """DX Tuc""" """2007A&A...465..943S""" """A""" 0 0.3771101 "" "" """""" """WD""" 0.29 """SP""" 62.3 2.53 2.408 0.198791 0.466166 0.266837 6250 6182 1.0 0.3 1.2 0.71 1.97 0.66 0 128.0 5.083 1 359.33967291666664 -64.2432275 4589.567499999888
+0.24080568302734373 5158131859934912640 1712367210 39.63818321237844 -14.299077870789013 5.350912704657549 0.014114068 379.1191 -14.855229719779022 0.014624752 2.5964967540858077 0.013977272 31 "" "" 0 0 0.90705115 101.81333 9.62455 33.79602 9.897585 34.660873 9.246015 1.1604909 0.6515703 "" "" "" "" "" "" """VARIABLE""" 191.12800186599503 -61.95092998933811 False False 4 True True False True False True True False 6313.426 4.1281 -0.0678 186.1283 0.0009 0.0005 45 """DY Cet""" """2011MNRAS.412.1787D""" """A""" 0 0.44079 "" "" """""" """WD""" 0.356 """SP""" 82.48 3.046 2.529 0.264273 0.453558 0.285828 6650 6611 1.436 0.511 1.48 0.938 3.84 1.507 0 "" 3.645 0 39.638251249999996 -14.299089166666667 4589.567499999888
+0.2708346208799714 2802651432644974080 1619564179 9.116374966881764 21.53743787415582 3.1255751706627284 0.024684303 126.62198 -7.732709059391173 0.029649684 15.027453467277553 0.017150942 31 "" "" 0 0 1.2891264 166.24585 10.995202 55.48914 11.231766 57.68345 10.553141 1.2157006 0.6786251 -25.58378 5.4561996 25 71.273315 10.034441 0.0 """VARIABLE""" 118.3027594199043 -41.199696650045865 False False 2 True True False True False True True False 6244.2427 4.129 -0.1757 315.7779 0.0052 0.0028 46 """DZ Psc""" """2013AJ....146...35Y""" """A""" 1 0.36613159 0.064109 11.89 """""" """WD""" 0.136 """SP""" 78.01 2.49 1.9808 0.95072 0.537345 0.236277 6210 6124 1.37 0.19 1.46 0.67 2.846 0.567 0 "" 4.836 1 9.116411666666664 21.537370833333334 4589.567499999888
+0.9053517035396809 20743528104253056 636725032 42.468124872390106 8.938064531634183 6.867073865899 0.019594748 350.4548 54.999367214958454 0.019881187 -13.029936604781934 0.017851586 31 "" "" 0 0 1.188946 107.884224 9.442709 35.87668 9.697823 34.17822 9.009263 1.2008214 0.68855953 "" "" "" "" "" "" """VARIABLE""" 165.57896027485427 -43.91043577418652 False False 4 False False False True False True True False 6025.536 4.0432 -0.4509 144.9044 0.0046 0.0025 47 """EE Cet""" """2011MNRAS.412.1787D""" """W""" 0 0.379925 "" "" """""" """WD""" 0.315 """SP""" 63.5 0.948 2.456522 0.21834 0.46075 0.274057 5989 6250 1.808 0.569 1.456 0.864 2.445 1.02 1 "" 2.679 0 42.46787708333332 8.938122222222223 4589.567499999888
+0.80938558175469 1603817861516048640 1508808190 218.12701499184007 50.82779608567523 6.213747982515712 0.0133014545 467.148 -32.54603648185979 0.011758215 -38.808416216568375 0.013906179 31 "" "" 1 0 1.0662212 132.57982 9.385025 43.42396 9.635115 43.481464 8.949857 1.2044771 0.6852579 "" "" "" "" "" "" """VARIABLE""" 90.81323550596852 59.52838519843189 False False 0 True True False True False False True False "" "" "" "" "" "" 48 """EF Boo""" """2005AcA....55..123G""" """W""" 0 0.4205144 0.022663 "" """2017NewA...55...13Y""" """WD""" 0.534 """SP""" 75.7 3.136 2.862908 0.248056 0.421859 0.318643 6425 6450 1.547 0.792 1.431 1.064 3.084 1.731 0 "" 2.712 0 218.12724374999996 50.82796833333334 4589.567499999888
+0.5167121611917967 2260078831302085504 1642285843 271.37667445336365 69.75426901810162 3.480933150154165 0.014180248 245.4776 -21.786016592038067 0.017319571 -23.90162937288812 0.019159256 31 "" "" 13 0 1.054933 128.25903 10.841961 36.63566 11.089098 45.31176 10.28854 1.2783613 0.8005581 "" "" "" "" "" "" """VARIABLE""" 100.051815850938 29.282897474042844 False False 0 True True False True False True True False 5735.64 3.8515 -0.9349 286.7989 0.0464 0.0252 49 """EF Dra""" """2012RAA....12..419Y""" """A""" 1 0.42402845 0.032141 17.2 """""" """WD""" 0.16 """SP""" 77.8 3.045 2.0818 0.467413 0.515573 0.232624 6250 6186 1.815 0.29 1.702 0.777 3.961 0.793 1 "" 4.377 0 271.3769541666666 69.754375 4589.567499999888
+0.16410260506328078 2436283197513649664 109944199 356.82639312538606 -8.086692822751383 2.945563754479862 0.02639718 111.5863 -10.320444480309718 0.03752443 0.07239762718041493 0.023020541 95 1.6062475 0.005095614 0 0 1.0005293 142.91241 10.466248 45.197918 10.6759815 45.714703 10.076152 1.2007351 0.5998297 "" "" "" "" "" "" """VARIABLE""" 81.39684406918454 -65.64502178678715 False False 4 False False False True False True True False 6770.6045 4.1753 0.4444 334.2585 0.0019 0.001 50 """EL Aqr""" """2004Ap&SS.291...21W""" """A""" 0 0.4814106 "" "" """""" """WD""" 0.203 """SP""" 70.84 3.196 2.183 0.441778 0.499649 0.249323 6909 6707 1.57 0.32 "" "" "" "" 0 "" "" 0 356.82643916666666 -8.086693055555557 4589.567499999888
+0.3348597330457581 6315179659882472704 916691459 229.20262028460374 -13.03920509035326 6.808825155753691 0.024301121 280.18564 20.86502895988827 0.030762518 -1.2972391348978998 0.021549787 31 "" "" 0 0 1.0302018 122.53717 7.2213526 38.390686 7.33334 40.141262 7.0066867 1.1670998 0.32665348 "" "" "" "" "" "" """VARIABLE""" 348.8763393245749 36.548840744765755 False False 0 True True False True False True True False 7736.9253 3.7823 -0.6691 146.106 0.1092 0.0584 53 """ES Lib""" """2014PASP..126..121C""" """A""" 0 0.88304093 "" "" """""" """WD""" 0.422 """SP""" 70.08 5.753 2.6842 0.150793 0.435316 0.293973 8500 5774 2.3 0.97 2.69 1.83 33.9 3.35 0 "" 3.883 1 229.20252499999998 -13.039199166666666 4589.567499999888
+0.6028593254714089 3889936491119648256 1701267502 158.35727580917933 17.574257595501894 9.425206481199021 0.019545546 482.21762 -37.1582782900823 0.022019746 -6.64035707454652 0.018280707 31 "" "" 1 0 1.0719243 337.39383 9.356111 107.97387 9.705851 108.87532 8.840159 1.2025065 0.8656912 "" "" "" "" "" "" """VARIABLE""" 222.34415017411845 56.81327488229012 False False 0 False False False True False True True False 5789.5938 4.1468 -0.283 105.7441 0.1105 0.0592 54 """ET Leo""" """2006AcA....56..127G""" """W""" 0 0.34650349 "" "" """""" """WD""" 0.342 """SP""" 36.6 2.671 2.44186 0.546359 0.468994 0.29634 5112 5500 1.586 0.542 1.359 0.835 1.115 0.564 0 "" 4.467 1 158.35744874999997 17.574286944444445 4589.567499999888
+0.7475487176316253 3982399779723342336 418648251 161.2780846870238 16.337523191005822 10.298206688044115 0.02519556 408.73102 -28.45444992071756 0.028580511 -37.101941015163426 0.029714849 31 "" "" 0 0 0.8755526 229.6262 8.128621 77.737236 8.367858 55.26448 7.7502704 1.1782217 0.61758757 "" "" "" "" "" "" """VARIABLE""" 226.62170759696818 58.85155140387071 False False 0 True True False True False True True False 6267.108 4.1013 -0.2657 96.7316 0.0008 0.0004 55 """EX Leo""" """2010MNRAS.408..464Z""" """A""" 0 0.40860257 "" "" """""" """WD""" 0.2 """SP""" 60.8 2.862 2.186 0.366233 0.498259 0.245451 6340 6110 1.573 0.313 1.56 0.734 3.474 0.663 0 "" 5.17 1 161.27821624999999 16.337688055555553 4589.567499999888
+0.40077062751329506 5689693157269867776 1744413471 141.67097144982097 -13.751763502956935 4.093300936252142 0.04245992 96.40388 -24.867049476448308 0.042214192 3.4228552665676664 0.033052366 31 "" "" 17 0 2.733887 116.99086 10.525766 37.937023 10.865244 40.362724 10.024736 1.1982571 0.8405075 "" "" "" "" "" "" """VARIABLE""" 245.80626120113226 25.685100645394375 False False 0 True True False True False True True False 5608.097 4.0954 -0.4454 242.7628 0.0128 0.0069 56 """EZ Hya""" """2004PASP..116..826Y""" """W""" 1 0.44974752 "" 30.9 """""" """WD""" 0.257 """SP""" 83.3 2.98 2.3137 0.34262 0.480299 0.263532 5721 6100 1.37 0.35 1.54 0.85 2.281 0.898 0 "" 3.152 0 141.67108499999998 -13.751778611111112 4589.567499999888
+0.9464566724542297 1595631104093744256 1131075786 230.52458598811654 51.182230379743224 8.279816666118919 0.010912834 758.72284 -38.317638168557274 0.0112042045 45.07439766416592 0.01334643 31 "" "" 0 0 0.9612245 472.3309 9.383437 153.9146 9.735738 172.22995 8.859338 1.2063686 0.8764 "" "" "" "" "" "" """VARIABLE""" 83.58346435963433 52.8347327455594 False False 0 True True False True False True True False 5725.903 4.0675 -0.1428 120.5009 0.1359 0.0729 58 """FI Boo""" """2013AJ....146..157C""" """W""" 0 0.389998 0.014267 "" """""" """PHOEBE""" 0.373 """SP""" 38.05 2.55 2.511194 0.487448 0.460352 0.300875 5420 5746 1.07 0.4 1.28 0.85 1.27 0.71 1 5.83 4.101 0 230.52485749999997 51.18203 4589.567499999888
+0.4549125664405614 1131545078714444032 1725957187 140.74178194945745 77.2195844311223 4.5012170161137615 0.01604388 280.55664 -3.703728347824839 0.017007716 -28.22409284744935 0.016953722 31 "" "" 0 0 1.0294914 129.54443 8.691764 42.82545 8.865041 42.5179 8.3486805 1.1956007 0.5163603 "" "" "" "" "" "" """VARIABLE""" 135.1547344881131 34.44247777601087 False False 4 True True False True False True True False 6650.0034 3.8064 -0.7301 217.8563 0.0753 0.0408 59 """FN Cam""" """2002IBVS.5258....1P""" """W""" 0 0.677132 0.037843 "" """2018NewA...62...20H""" """WD""" 0.222 """SP""" 71.2 4.644 2.162589 0.88 0.508973 0.274338 6700 6848 2.4 0.53 "" "" "" "" 0 "" "" 0 140.74185624999998 77.21970972222222 4589.567499999888
+0.31261372008487076 1396430108588343936 97082749 235.75104579730305 43.26545211261465 2.8022061012858375 0.012149149 230.6504 -0.1585492760490368 0.011575912 19.52567379595488 0.014269885 31 "" "" 0 0 0.947266 260.42905 10.067937 85.04699 10.285636 86.52938 9.719308 1.1737729 0.56632805 -17.992672 3.7180429 19 98.191635 10.033774 0.0 """VARIABLE""" 69.43024545939147 51.936786976500265 False False 0 True True False True False True True False 6757.7227 3.9139 -0.1796 354.84 0.0535 0.0288 60 """FP Boo""" """2006AcA....56..127G""" """A""" 0 0.64048195 -0.055002 24.32 """2017AIPC.1815h0010C""" """WD""" 0.096 """SP""" 68.8 3.781 1.922 0.393701 0.544165 0.19642 6980 6456 1.614 0.154 2.31 0.774 11.193 0.92 0 "" 3.38 0 235.75104666666664 43.265365277777775 4589.567499999888
+0.8575434329446326 5908602761263951616 400237603 224.96937316019253 -42.98326608657976 4.5009547711614575 0.020557277 218.94704 -34.558715672171196 0.024385016 -40.935630736802 0.02837797 31 "" "" 0 0 0.94280696 111.60424 9.774862 46.45226 9.97213 45.597546 9.386816 1.2065011 0.5853138 "" "" "" "" "" "" """VARIABLE""" 326.54894183917287 13.921717311507143 False False 4 True True False True False True True False 7146.1064 4.2121 0.0801 220.8039 0.325 0.1736 61 """FT Lup""" """2010AcA....60..305S""" """A""" 1 0.47008002 0.007576 "" """1983IBVS.2422....1L""" """WD""" 0.44 """SP""" 89.26 3.537 2.7231 0.133483 0.431209 0.296429 6700 4651 1.871 0.823 1.64 1.13 4.86 0.54 1 "" "" 1 224.96958291666664 -42.98308388888889 4589.567499999888
+0.5121239224231167 1016919342250995712 1332761599 133.62644892632505 51.24441030039271 3.2694204694454614 0.08018004 40.77599 11.791128640640004 0.07114618 -29.80111720531666 0.06714512 31 "" "" 0 0 4.2747836 467.05035 9.193888 167.08278 9.388529 155.4461 8.836703 1.1911013 0.5518255 "" "" "" "" "" "" """VARIABLE""" 167.39790465356245 39.835562104457615 False False 0 True True False True False True True False 6773.4746 3.6931 -0.4756 304.9984 0.0997 0.0538 62 """FT UMa""" """2011RAA....11.1158Y""" """A""" 0 0.6547038 "" "" """""" """WD""" 0.984 """SP""" 62.8 4.551 3.6419 0.153086 0.367863 0.365178 7178 7003 1.49 1.46 1.79 1.78 7.68 6.86 1 "" "" 0 133.626365 51.2445425 4589.567499999888
+0.44231455221891336 663045166985063296 291589023 127.86627725171076 19.884258994470397 14.651832873327466 0.19041353 76.94743 -10.291530981551595 0.23500626 9.992814814792043 0.13580732 95 1.2786579 0.025180116 58 0 3.4735749 517.02606 11.01182 18.420546 11.159972 21.432379 9.788423 1.931601 1.3715496 25.956585 0.5676284 5 39.554096 "" "" """NOT_AVAILABLE""" 204.82206687517095 30.589320669232432 False False 0 False False False False False False True False "" "" "" "" "" "" 66 """GSC 01387-00475""" """2010NewA...15..155Y""" """A""" 0 0.21781128 "" "" """""" """WD""" 0.474 """SP""" 49.9 1.322 2.6084 0.762933 0.459211 0.338975 6690 6524 0.443 0.21 0.658 0.496 0.188 0.09 1 "" "" 0 127.86615708333333 19.884307222222223 4589.567499999888
+0.663483642964341 663045166984556928 1124748699 127.86598934246088 19.884402536699625 14.763526973213457 0.09415575 156.799 -10.123054713553095 0.09254531 7.77788598258989 0.06854806 95 1.4488451 0.014771003 80 0 6.0433707 518.533 10.452533 55.868134 10.769748 57.523808 9.3640995 1.6885387 1.4056482 "" "" "" "" "" "" """NOT_AVAILABLE""" 204.82180072877054 30.5891171599107 False False 0 True True False False False False True False "" "" "" "" "" "" 66 """GSC 01387-00475""" """2010NewA...15..155Y""" """A""" 0 0.21781128 "" "" """""" """WD""" 0.474 """SP""" 49.9 1.322 2.6084 0.762933 0.459211 0.338975 6690 6524 0.443 0.21 0.658 0.496 0.188 0.09 1 "" "" 0 127.86615708333333 19.884307222222223 4589.567499999888
+0.19289107122521518 661913219762617728 278978137 132.05284165965446 21.120457887038434 3.046387160002606 0.017383933 175.24155 -7.658411830420312 0.015876757 -9.365501935856447 0.012787731 31 "" "" 0 0 0.9490943 134.117 12.522567 41.727608 12.921189 43.27697 11.985359 1.1927574 0.9358301 "" "" "" "" "" "" """VARIABLE""" 205.01664645781918 34.69746963946658 False False 0 True True False True False True True False 5785.13 4.4842 0.026 325.7319 0.1031 0.0548 67 """GW Cnc""" """2016NewA...46...31G""" """W""" 1 0.2814114 "" "" """""" """WD""" 0.265 """SP""" 83.38 1.936 2.351189 0.218876 0.473565 0.260851 5649 5790 0.971 0.26 0.961 0.53 0.842 0.28 0 367.0 6.892 1 132.05287791666666 21.120499444444444 4589.567499999888
+0.22231159480967233 351835302754498560 1301896001 33.05853363111751 44.66005607224488 5.9353106152467365 0.018631032 318.57123 -13.918727676344274 0.023943702 -0.39072503497334266 0.024167236 31 "" "" 0 0 1.024473 81.35617 10.887164 22.88029 11.305129 25.093443 10.350293 1.1836728 0.9548359 "" "" "" "" "" "" """VARIABLE""" 137.72556624183918 -15.878366756499721 False False 4 False False False True False False True False 5347.674 4.2952 -0.2688 167.5947 0.1595 0.0854 68 """GZ And""" """2004AcA....54..195B""" """A""" 1 0.30500298 "" "" """""" """WD""" 0.532 """SP""" 87.0 2.279 2.899468 0.117933 0.415244 0.310965 5810 5500 1.115 0.593 1.005 0.741 1.033 0.451 0 "" "" 0 33.05862041666667 44.66005777777777 4589.567499999888
+0.5543990037995974 1506787678352110848 1393142640 215.43341573821024 46.69981333695133 5.034359672108041 0.057800524 87.098854 -34.63818257085866 0.05472412 -1.7926416113941324 0.058984052 31 "" "" 0 0 3.7203107 161.05064 11.035225 51.001144 11.378823 56.248653 10.471106 1.2361982 0.9077177 "" "" "" "" "" "" """VARIABLE""" 86.67345565500719 63.56759174151313 False False 3 True True False True False False True False 5570.6655 4.3395 -0.0218 196.9254 0.0011 0.0006 69 """HH Boo""" """2015NewA...41...26G""" """A""" 0 0.318666208 -0.000832 7.39 """""" """WD""" 0.587 """SP""" 69.41 2.341 3.003375 0.105 0.40657 0.318331 5680 5386 1.068 0.627 0.997 0.782 0.749 0.57 0 190.33 "" 1 215.43363999999997 46.699821111111106 4589.567499999888
+0.1863990571257893 762042921909228288 1766966898 166.20069555565954 35.60738398771409 3.823119662622705 0.016052652 238.16125 11.406266786800966 0.014699045 -2.135267624082328 0.016347094 31 "" "" 0 0 1.050281 232.40994 10.598554 74.59367 10.875304 78.706856 10.162514 1.1910099 0.7127905 "" "" "" "" "" "" """VARIABLE""" 185.80834301315437 65.80398991645637 False False 0 True True False True False True True False 5978.996 3.9666 -0.7316 260.0414 0.0036 0.0019 70 """HH UMa""" """2015NewA...34..271Y""" """A""" 0 0.375494 "" "" """""" """WD""" 0.295 """SP""" 52.4 2.58 2.379 0.413543 0.473402 0.277537 6550 6297 1.25 0.37 1.32 0.78 3.03 0.86 1 "" 4.625 0 166.20063291666662 35.607393333333334 4589.567499999888
+0.21400166052822214 2157403476266324096 922604887 278.351558037917 58.70653725384777 3.7802788134698853 0.013829525 273.34842 6.484329767584473 0.017816667 11.640667997285368 0.017329445 31 "" "" 0 0 1.2076231 362.42535 8.987074 114.97471 9.123209 120.90904 8.72406 1.1760696 0.39914894 "" "" "" "" "" "" """VARIABLE""" 88.0183449527273 25.212716690507552 False False 0 True True False True False True True False 7299.966 3.9167 -0.5855 263.2113 0.0529 0.0284 71 """HI Dra""" """2014AJ....148..126C""" """A""" 0 0.597423 "" "" """""" """DC""" 0.25 """SP""" 54.74 3.8 2.3167 0.229657 0.478203 0.256898 7000 6550 1.7 0.42 1.97 1.07 7.87 1.8 1 "" 2.836 1 278.3515025 58.70648527777778 4589.567499999888
+0.1738755214458007 5493804788438991872 1602218064 113.40913583516824 -50.123640777160325 3.9982291183407663 0.010712437 373.23242 -10.204363836408083 0.01427441 -3.8470923303300637 0.013317313 31 "" "" 0 0 0.98083043 135.15657 10.48747 44.719177 10.776302 46.612415 10.015552 1.2059218 0.7607508 "" "" "" "" "" "" """VARIABLE""" 262.37614106530145 -14.209350386832277 False False 0 True True False True False True True False 5859.636 3.9565 -0.4186 249.6228 0.0211 0.0114 72 """HI Pup""" """2014NewA...31...56U""" """A""" 1 0.43257 "" "" """""" """PHOEBE""" 0.206 """SP""" 82.2 2.72 2.221 0.202567 0.491136 0.241782 6500 6377 1.21 0.23 1.44 0.67 3.3 0.7 0 "" 4.412 1 113.40920624999998 -50.123623611111114 4589.567499999888
+0.640079179872827 774558834567373184 1554993052 178.9085796860654 47.25723197214941 3.9930449451963095 0.019373395 206.10973 13.938694544009062 0.012894815 -37.54866387222057 0.022619624 31 "" "" 0 0 1.0756463 301.5127 8.6272545 96.75494 8.75462 98.252174 8.353465 1.1866072 0.40115452 "" "" "" "" "" "" """VARIABLE""" 147.7852628859673 67.08782213642425 False False 0 True True False True False True True False 7088.86 3.6472 -1.6013 251.5939 0.0011 0.0006 75 """HV UMa""" """2000A&A...356..603C""" """W""" 0 0.355385 "" "" """""" """Bynsyn""" 0.19 """SP""" 57.3 5.002 2.114118 0.77 0.514102 0.256585 7000 7910 2.8 0.2 2.62 1.18 14.797 4.894 0 "" 0.913 0 178.9084883333333 47.257398611111114 4589.567499999888
+0.8853013000884483 1571033242274284800 1646533447 188.2282278960367 54.79543500176211 4.371813273685473 0.06599235 66.24728 -44.12184351604515 0.21943864 -11.852884522979679 0.07072108 95 1.5725019 0.011164529 5 0 1.8251184 "" "" 9.303624 8.220488 20.484161 7.832791 "" 0.38769674 "" "" "" "" "" "" """NOT_AVAILABLE""" 128.64599937306443 62.12681257541358 False False 0 False False False False False False True False "" "" "" "" "" "" 77 """II UMa""" """2016AJ....151...67Z""" """A""" 1 0.82522 0.042163 "" """""" """WD""" 0.172 """SP""" 77.7 4.909 2.0656 0.868578 0.522694 0.252213 6424 6418 1.99 0.34 "" "" "" "" 1 "" "" 0 188.22850333333332 54.79524722222222 4589.567499999888
+0.730687737145098 1571033237978735744 938771757 188.22816450681654 54.79519207601543 4.554639893832876 0.03048796 149.39143 -43.993604372411205 0.029577728 -12.44744407692054 0.028501399 31 "" "" 41 0 1.479467 179.16566 8.361039 58.805992 8.348873 61.771526 7.7770433 1.454184 0.5718298 "" "" "" "" "" "" """VARIABLE""" 128.64615647851966 62.12704699726767 False False 0 True True False True False False True False "" "" "" "" "" "" 77 """II UMa""" """2016AJ....151...67Z""" """A""" 1 0.82522 0.042163 "" """""" """WD""" 0.172 """SP""" 77.7 4.909 2.0656 0.868578 0.522694 0.252213 6424 6418 1.99 0.34 "" "" "" "" 1 "" "" 0 188.22850333333332 54.79524722222222 4589.567499999888
+0.10209128874548191 2086455087605592448 246631829 298.12485471052963 47.81241859534458 1.1665667476512418 0.012890832 90.49585 6.343813677190511 0.015404284 0.13625404926164336 0.014715773 31 "" "" 1 0 1.1141372 177.26332 12.843844 55.727585 13.1547575 59.26658 12.401735 1.1771265 0.7530222 0.38694784 5.85407 20 17.947926 "" "" """VARIABLE""" 81.7323509873035 10.398763906550652 False False 0 True True False True False True True False 6262.9395 4.1625 0.4918 834.6662 0.0022 0.0012 78 """KIC 10618253""" """2016PASA...33...43S""" """A""" 1 0.437403 "" "" """""" """PHOEBE""" 0.125 """SP""" 82.4 2.87 1.957887 0.93 0.54114 0.229089 6118 5970 1.476 0.184 1.703 0.756 3.639 0.698 0 "" 4.173 0 298.12481249999996 47.812417777777775 4589.567499999888
+0.17724259367665146 2128318232616057856 1064635057 292.3163972686699 46.62215662692694 1.5798413150376298 0.013379479 118.07943 -9.504949672783615 0.015706854 -5.717849862472144 0.01685346 31 "" "" 0 0 1.2888387 311.66696 12.28416 100.58361 12.598643 105.5307 11.805406 1.1970501 0.7932377 "" "" "" "" "" "" """VARIABLE""" 78.80069494088968 13.355685481542181 False False 0 True True False True False True True False 5865.0176 3.9391 -0.1401 619.9222 0.0027 0.0014 79 """KIC 9832227""" """2017ApJ...840....1M""" """W""" 0 0.4579615 "" "" """""" """PHOEBE""" 0.228 """SP""" 53.19 2.992 2.238854 0.43 0.491584 0.25777 5800 5920 1.395 0.318 1.581 0.83 2.609 0.789 0 "" 3.338 0 292.31645875 46.62218194444444 4589.567499999888
+0.1828980348235111 1938276860462797568 1708377758 351.77789671984823 45.5561594835151 3.4408844866695665 0.045811944 75.108894 6.6944389147094245 0.037719548 9.239943181577921 0.0387081 31 "" "" 0 0 2.5151494 117.32999 11.221599 40.778797 11.536772 43.87992 10.680862 1.2351382 0.85590935 "" "" "" "" "" "" """VARIABLE""" 107.82980431945074 -14.828392630668107 False False 1 True True False True False True True False 5873.508 3.9636 -0.7702 287.9678 0.2497 0.1359 80 """LO And""" """2015IBVS.6134....1N""" """W""" 1 0.38044188 0.019354 29.6 """""" """WD""" 0.305 """SP""" 80.1 2.74 2.401 0.401383 0.470582 0.279698 6650 6690 1.468 0.447 1.4 0.84 3.44 1.27 0 343.0 2.721 1 351.7778541666666 45.55611833333333 4589.567499999888
+0.5350433186701798 6373593929528340608 1675942254 311.6160412442862 -71.94964328343796 4.082378095473059 0.016710946 244.29366 29.556608361036954 0.013476262 -15.588519218160634 0.01712643 31 "" "" 0 0 1.0974475 164.9321 8.74898 56.503468 8.919253 57.815014 8.383948 1.2091035 0.535305 "" "" "" "" "" "" """VARIABLE""" 322.17367238314154 -34.48635875709471 False False 2 True True False True False True True False 6998.528 3.8735 0.2405 243.7759 0.0066 0.0035 82 """MW Pav""" """2015PASP..127..742A""" """W""" 1 0.79498593 "" "" """""" """WD""" 0.22 """SP""" 86.39 4.427 2.185 0.692604 0.502903 0.265542 6900 6969 1.514 0.327 2.412 1.277 11.819 3.314 0 "" 1.237 1 311.6156170833333 -71.94957388888889 4589.567499999888
+0.9400542580967266 3672871592759375104 844806307 214.90700817827775 5.896193092974964 8.814509585334369 0.023667052 372.438 -54.70620296081505 0.028564041 -21.507843728368783 0.022984682 31 "" "" 0 0 0.8373582 114.67346 7.5801063 36.24057 7.7631702 44.121567 7.240773 1.1880617 0.52239704 "" "" "" "" "" "" """VARIABLE""" 351.55002036818695 60.15597024413388 False False 4 True True False True False True True False 6921.5107 3.959 -0.2614 113.0139 0.0026 0.0014 83 """NN Vir""" """2011MNRAS.412.1787D""" """W""" 1 0.480688 "" "" """""" """WD""" 0.491 """SP""" 65.52 3.574 2.696 0.553199 0.444958 0.329169 7148 7201 1.774 0.871 1.723 1.294 6.941 4.033 0 "" 1.709 0 214.90725249999997 5.89628861111111 4589.567499999888
+0.4900695701968186 3636046921120692992 1442412954 197.6343720271614 -4.159080397147693 11.705060182513034 0.28482166 41.096104 28.776914205611394 0.30899787 -10.404944357252647 0.19386871 31 "" "" 0 0 12.820387 143.7715 9.560563 50.263462 10.0235405 56.66698 8.989472 1.1857309 1.0340681 -21.634253 4.3299046 19 147.75098 31.372433 0.0 """VARIABLE""" 312.04179638624714 58.37443596203277 False False 0 True True False True False True True False 4995.309 4.2573 -0.5095 83.5974 0.0006 0.0003 87 """PY Vir""" """2013AJ....145...39Z""" """A""" 0 0.311248 "" 5.22 """""" """WD""" 0.773 """SP""" 69.53 2.3 3.3691 0.003462 0.377927 0.33501 4830 4702 0.95 0.74 0.923 0.819 0.415 0.293 0 "" "" 0 197.63424374999997 -4.15903388888889 4589.567499999888
+0.4455487100353842 888443882447477760 587188094 102.69199233900008 29.453034869057806 4.696312707134607 0.018529555 253.44984 12.436266315963188 0.020890692 -24.90950197744098 0.017724684 31 "" "" 0 0 1.1966449 96.76858 10.514329 33.833946 10.802576 35.416336 10.047522 1.2031682 0.7550545 "" "" "" "" "" "" """VARIABLE""" 186.1882237672669 12.823379267424354 False False 0 True True False True False False True False "" "" "" "" "" "" 88 """QW Gem""" """2013SerAJ.186...47C""" """W""" 0 0.35812272 -0.022032 "" """2017RAA....17..112W""" """DC""" 0.334 """SP""" 80.2 2.56 2.51 0.146121 0.45335 0.275376 6200 6370 1.3 0.44 1.24 0.76 1.976 0.787 1 "" 4.017 0 102.69192874999999 29.453145555555555 4589.567499999888
+0.24449348665318985 342870640854339200 1508402975 29.490810628408678 37.80618407930928 2.2073474474840213 0.028364094 77.82189 9.52463974125099 0.025929028 -11.909145982138025 0.030781412 31 "" "" 0 0 1.0223669 188.38217 11.294135 56.212605 11.546816 58.62761 10.884692 1.1883882 0.6621237 5.905374 18.687733 8 24.425777 18.338741 0.0 """NOT_AVAILABLE""" 137.1765390377751 -23.218512044802413 False False 0 False False False False False True True False 6144.897 4.0391 -0.3995 442.6833 0.0116 0.0063 89 """QX And""" """2011A&A...525A..66D""" """A""" 0 0.4121716 0.023328 "" """2011NewA...16..194R""" """DC""" 0.306 """SP""" 54.6 2.89 2.41 0.364465 0.468837 0.278281 6440 6420 1.47 0.45 1.46 0.88 3.16 1.14 0 416.0 4.179 0 29.490756666666663 37.80623694444444 4589.567499999888
+0.9257728487406822 5891961828915812352 394230257 214.23797746222553 -57.85445227339453 9.348984289179713 0.036325425 257.36752 -53.00903330389664 0.029442059 -23.205787649079305 0.03623656 95 1.6324148 0.0065968027 0 0 0.991718 175.27455 7.3689294 57.686424 7.5572586 53.880993 7.029224 1.1852955 0.5280347 "" "" "" "" "" "" """VARIABLE""" 314.1326824109518 3.145608049637988 False False 4 True True False True False True True False 6903.0835 3.9987 0.4025 105.2629 0.0382 0.0203 90 """RR Cen""" """2005PASJ...57..983Y""" """A""" 1 0.60569079 0.010454 60.1 """""" """WD""" 0.21 """SP""" 81.0 3.92 2.1994 0.434061 0.497176 0.25161 6912 6891 1.82 0.38 2.1 1.05 8.89 2.2 1 "" 2.37 0 214.23842 -57.85434888888889 4589.567499999888
+0.13044389129400283 796029174219793536 421549814 147.45132348877235 34.45424823599873 2.7742843444312233 0.02073495 133.79749 -1.130687630339103 0.018528314 -8.124838555209466 0.014722191 31 "" "" 0 0 1.034608 112.532486 11.44999 34.51948 11.689907 36.6962 10.970502 1.2360843 0.7194052 "" "" "" "" "" "" """VARIABLE""" 190.73959936128665 50.64057785130772 False False 0 True True False True False True True False 6103.222 4.1071 -0.3324 353.9183 0.0024 0.0013 91 """RT LMi""" """2010MNRAS.408..464Z""" """W""" 1 0.3749173 "" 46.7 """2008PASJ...60...77Q""" """WD""" 0.382 """SP""" 83.2 2.654 2.575 0.282813 0.449129 0.292451 6200 6350 1.307 0.479 1.293 0.806 2.182 0.933 0 "" 3.695 0 147.45132916666662 34.45428416666667 4589.567499999888
+0.30133081497482406 3958901639985988096 820564839 188.77115788839194 23.337184396075333 4.801771031095775 0.039443314 121.73853 15.80263289066291 0.029871764 -10.246878898018108 0.03870514 95 1.5798494 0.0057918546 0 0 1.2795281 74.65569 10.5773115 23.814495 10.892222 25.352703 10.130084 1.178113 0.76213837 "" "" "" "" "" "" """VARIABLE""" 257.75253340536557 84.70474639958871 False False 4 False False False True False True True False 6044.7754 4.2374 -0.1646 206.6624 0.0007 0.0004 94 """RZ Com""" """2019IBVS.6266....1N""" """W""" 1 0.3385075 0.003335 "" """""" """WD""" 0.46 """SP""" 86.8 2.49 2.75069 0.171163 0.429544 0.30195 5257 5420 1.249 0.573 1.15 0.82 1.63 0.93 1 203.1 4.392 1 188.77108125 23.337229722222222 4589.567499999888
+0.4259316888090808 3410404320237268096 834534707 69.15680143369137 18.75491145336801 4.567899193343694 0.01926026 237.16705 -25.768091216748047 0.022576395 -6.964765769201423 0.015923338 31 "" "" 4 0 1.0730556 101.36153 10.26044 33.39693 10.616871 34.70119 9.693329 1.2319422 0.923542 "" "" "" "" "" "" """VARIABLE""" 179.21352397577184 -18.724000774964907 False False 4 True True False True False True True False 6614.0864 4.0438 -0.9769 217.3764 0.6574 0.3585 95 """RZ Tau""" """2003AJ....126.1960Y""" """A""" 1 0.41567758 0.008355 60.0 """""" """WD""" 0.376 """SP""" 83.57 3.11 2.4995 0.56057 0.463319 0.305415 7300 7200 1.7 0.64 1.56 1.04 6.19 2.6 0 "" 2.768 1 69.15692208333333 18.754942222222223 4589.567499999888
+0.44809622096849966 104063247946740352 869033137 31.076825134597083 24.000595754989938 5.27832760598681 0.019858053 265.8029 26.374974894269563 0.020311685 -9.381359267634819 0.019779513 31 "" "" 0 0 1.0078644 125.895 10.214254 44.392063 10.559584 47.178257 9.720803 1.1907601 0.8387804 "" "" "" "" "" "" """VARIABLE""" 143.58492754308926 -35.93163320621472 False False 4 False False False True False True True False 5681.5835 4.0403 -0.1861 187.9981 0.003 0.0016 96 """SS Ari""" """2009Ap&SS.321...19L""" """W""" 0 0.40598629 -0.034819 37.75 """""" """WD""" 0.308 """SP""" 77.31 2.76 2.4652 0.093791 0.45758 0.266893 5488 5860 1.3 0.4 "" "" "" "" 0 "" "" 1 31.076696666666667 24.000637222222224 4589.567499999888
+0.605208488035228 3516104217008286208 27890789 190.0628525701863 -18.80029182504063 10.082157146456556 0.018089022 557.3633 37.13225464263894 0.020857546 -6.847419597052161 0.016496409 31 "" "" 0 0 0.96723056 373.9369 8.869456 122.03975 9.146899 131.27406 8.41829 1.1994754 0.7286091 "" "" "" "" "" "" """VARIABLE""" 299.25102921679854 43.991493278263505 False False 0 True True False True False True True False 5969.7666 4.2229 -0.5309 98.8655 0.0006 0.0003 98 """SX Crv""" """2004AcA....54..299Z""" """A""" 0 0.3165992 -0.091126 "" """""" """WD""" 0.079 """SP""" 61.21 2.157 1.877 0.271871 0.553057 0.181963 6340 6160 1.246 0.098 1.347 0.409 2.632 0.216 0 "" 8.08 1 190.06267791666664 -18.800261388888888 4589.567499999888
+0.11010456747177602 4727644504718888064 664143498 46.755168956057105 -56.13459328884409 1.932163184074262 0.012280872 157.3311 4.984530614316517 0.013874029 -4.709321594386785 0.013847131 31 "" "" 0 0 0.789547 105.083824 11.109357 35.65569 11.2867365 37.670914 10.740503 1.2071366 0.5462332 37.677776 15.1865635 30 65.885155 29.698698 0.0 """VARIABLE""" 272.45631267891275 -52.21197198237931 False False 2 True True False True False False True False "" "" "" "" "" "" 99 """SZ Hor""" """2011MNRAS.412.1787D""" """A""" 0 0.625102 "" "" """""" """WD""" 0.47 """SP""" 80.36 4.277 2.778 0.140656 0.426321 0.302109 6881 5183 1.823 0.857 1.946 1.381 7.605 1.234 0 "" "" 0 46.75512916666666 -56.134572222222225 4589.567499999888
+0.06888959521471515 2464167465228786816 1457725744 26.735430639396544 -9.752728829895508 2.3116157832125244 0.025679972 90.01629 0.18941434191910897 0.024475452 -4.239889925239301 0.015547122 31 "" "" 0 0 0.93530935 114.0179 10.930168 31.048573 11.114141 30.140799 10.655105 1.1544784 0.45903683 39.551994 26.249174 20 62.20859 42.722897 0.0 """VARIABLE""" 162.55016965595914 -68.24404535642226 False False 0 True True True True False True True False 7323.391 4.1489 -0.1928 425.0865 0.1719 0.092 100 """TT Cet""" """2011MNRAS.412.1787D""" """A""" 0 0.485952 "" "" """""" """WD""" 0.39 """SP""" 82.25 3.726 2.638558 0.08 0.438334 0.284323 6765 5230 2.109 0.823 1.729 1.155 5.608 0.894 0 "" "" 0 26.735429583333328 -9.752709722222223 4589.567499999888
+0.4722094515880052 5332644696271070720 1610654983 174.99097704269252 -64.81648819144857 4.856923151473548 0.021433175 226.60774 28.397420011367412 0.023350064 -8.019848214382987 0.02439429 95 1.5055243 0.0050452207 54 0 1.5991665 144.73436 10.546315 48.450203 10.920305 50.560738 9.809581 1.3435644 1.1107244 "" "" "" "" "" "" """VARIABLE""" 295.41946566223857 -2.992380953474171 False False 0 True True False True False True True False 5831.579 4.0323 -0.7036 204.8338 0.6309 0.3429 101 """TV Mus""" """2005AJ....130..224Q""" """A""" 1 0.4456794 -0.018662 29.1 """""" """WD""" 0.166 """SP""" 77.15 2.98 2.0664 0.7421 0.521031 0.244688 5980 5808 1.35 0.22 1.7 0.83 3.33 0.71 0 "" 4.313 0 174.99068041666663 -64.8164525 4589.567499999888
+0.7454066806127584 5136147262376858240 1055181035 27.225807018187126 -20.893009456258515 6.548236138287403 0.019724991 331.97665 43.97279127003152 0.019781204 -15.147674771351408 0.014331388 95 1.5366341 0.0035416114 0 0 1.0466613 76.3924 10.676506 28.314928 10.983723 29.631386 10.078956 1.2763379 0.90476704 "" "" "" "" "" "" """VARIABLE""" 190.58565870499862 -75.48534998581086 False False 0 True True False True False False True False "" "" "" "" "" "" 102 """TW Cet""" """2011MNRAS.412.1787D""" """W""" 0 0.316851 "" "" """""" """WD""" 0.75 """SP""" 81.18 2.329 3.305568 0.06 0.383847 0.335994 5753 5865 0.963 0.722 0.95 0.831 0.886 0.733 0 "" 2.852 0 27.225597499999996 -20.892941944444445 4589.567499999888
+0.6109332103405475 661190015991474688 182451519 130.00692974596615 18.99978428559308 5.436823716326426 0.018215299 298.47568 -36.14099999537519 0.019430337 -12.354235442465557 0.013983135 31 "" "" 0 0 0.8888696 176.0868 10.0304165 56.33799 10.360586 58.75166 9.548475 1.1911867 0.8121109 "" "" "" "" "" "" """VARIABLE""" 206.6225168427164 32.16871030446328 False False 0 True True False True False True True False 5784.3584 4.1795 -0.0398 182.751 0.0054 0.0029 103 """TX Cnc""" """2011MNRAS.412.1787D""" """W""" 0 0.382883 0.003197 "" """2009AJ....138..680Z""" """WD""" 0.455 """SP""" 62.19 2.762 2.741583 0.170047 0.430352 0.300998 6121 6250 1.322 0.602 1.271 0.892 2.03 1.088 0 "" 4.059 0 130.00709958333331 18.999839166666668 4589.567499999888
+0.7521513535872948 5620104860188835200 1762484726 113.19252029229484 -20.791784364318907 4.565149177071909 0.018217703 250.58862 -23.13907360051545 0.0155849885 40.9999803213914 0.01917335 31 "" "" 0 0 1.0180814 150.1925 8.592833 48.405075 8.7824955 51.01433 8.209969 1.2078868 0.57252693 "" "" "" "" "" "" """VARIABLE""" 236.03684056664466 -0.723161525718565 False False 4 True True False True False True True False 6917.0513 3.6894 -0.8729 217.1202 0.1617 0.0872 104 """TY Pup""" """2018AJ....156..199S""" """W""" 1 0.8192406 0.004812 3.62 """""" """WD""" 0.25 """SP""" 83.64 4.653 2.219999 0.843 0.500884 0.283179 6900 6915 1.65 0.303 2.636 1.373 14.112 3.862 0 "" 1.107 0 113.19262999999998 -20.79196638888889 4589.567499999888
+0.41074521697199123 2054900890599013376 1336219108 302.2965604017018 32.56485291592104 3.85886969799009 0.013995058 275.7309 -14.588716942283192 0.012364243 -21.162585929949817 0.014194783 31 "" "" 0 0 0.9232429 282.50537 11.485795 78.63317 11.784414 91.28063 10.992145 1.2140777 0.7922697 62.500355 25.76044 24 53.914375 76.548134 0.0 """VARIABLE""" 70.29957880225373 -0.23867983228600667 False False 0 True True False True False True True False 5688.2124 4.2834 -1.1475 255.5448 0.0034 0.0019 106 """TYC 2675-663-1""" """2010A&A...514A..36C""" """A""" 0 0.4223576 "" "" """""" """PHOEBE""" 0.81 """SP""" 65.2 3.141 3.37 0.1407 0.38263 0.347575 6480 5534 1.29 1.04 1.22 1.11 2.4 1.04 1 "" "" 1 302.2966370833333 32.56494694444444 4589.567499999888
+0.4178700410017368 5179913528878335872 1618025467 47.469882038440815 -6.892633658943658 4.2123724239029885 0.017738536 237.47014 26.004055906283476 0.018294409 1.8645534570557192 0.017586283 31 "" "" 0 0 1.2666188 86.67445 10.693281 27.061815 11.047101 28.393784 10.166284 1.2074587 0.8808174 "" "" "" "" "" "" """VARIABLE""" 187.69656504083875 -51.436539535804634 False False 0 True True False True False True True False 5636.7656 4.1861 0.1676 236.0574 0.0046 0.0024 110 """UX Eri""" """2011MNRAS.412.1787D""" """W""" 0 0.445289 0.006653 45.3 """2007AJ....134.1769Q""" """WD""" 0.373 """SP""" 75.7 3.069 2.575718 0.204404 0.447379 0.286711 6006 6093 1.421 0.53 1.47 0.945 2.519 1.103 0 "" 3.464 0 47.469765416666654 -6.892641944444444 4589.567499999888
+0.3605596134002059 3884801084623441152 884772519 160.13816769927521 13.566896088593401 3.0375704320576564 0.021415757 141.8381 -22.53609590208542 0.022359472 -1.8157369967285673 0.02236183 31 "" "" 0 0 1.0239383 74.19511 9.712723 22.860344 9.927382 26.721636 9.393699 1.1598269 0.5336838 "" "" "" "" "" "" """VARIABLE""" 230.27958580893912 56.59791392108196 False False 4 False False False True False False True False "" "" "" "" "" "" 111 """UZ Leo""" """2018PASP..130c4201L""" """W""" 1 0.618044426 0.030154 139.0 """""" """WD""" 0.306 """SP""" 89.56 4.213 2.3375 0.747719 0.484989 0.296806 6980 7094 2.01 0.62 2.23 1.4 10.6 3.68 1 388.0 1.418 1 160.13827041666664 13.56690388888889 4589.567499999888
+0.18815071263415264 4519217850760871808 47493469 283.3231287675487 21.22580532673117 3.920384100600023 0.013586268 288.5549 6.493705800326254 0.009478949 9.746410393814362 0.013707533 31 "" "" 0 0 0.94370115 619.2562 9.631986 196.32864 9.869413 201.86638 9.222479 1.1965543 0.6469345 "" "" "" "" "" "" """VARIABLE""" 52.189606917321065 9.11247656965842 False False 0 True True False True False True True False 7258.3784 4.0142 -0.2377 252.6301 0.4555 0.245 112 """V1003 Her""" """2015Ap&SS.357...59P""" """W""" 0 0.4933265 "" "" """""" """PHOEBE""" 0.373 """SP""" 38.0 3.74 2.541045 0.357055 0.454273 0.294207 6312 6936 "" "" "" "" "" "" 0 "" "" 0 283.32309749999996 21.225761944444443 4589.567499999888
+0.39035090245668397 1855066129714099840 930459980 321.2514857071989 33.68737443089651 5.421906953461662 0.034430362 157.4746 -1.028462228413824 0.024710182 -24.42865078052441 0.031076817 31 "" "" 0 0 1.9849192 225.47137 8.277903 73.7182 8.494236 74.39352 7.9026637 1.1889186 0.5915723 "" "" "" "" "" "" """VARIABLE""" 81.12666021984074 -11.945790102108845 False False 1 True True False True False False True False "" "" "" "" "" "" 113 """V1073 Cyg""" """2018RAA....18...20T""" """A""" 0 0.7858506 -0.004173 82.7 """""" """WD""" 0.303 """SP""" 68.4 5.172 2.45 0.121013 0.459831 0.266886 7300 6609 1.81 0.549 2.545 1.481 16.514 3.757 0 "" 1.897 0 321.2514908333333 33.687482777777774 4589.567499999888
+0.9368194082925175 37141885040921216 89646189 57.36551349221299 12.912370474790407 10.201536374209105 0.01782564 572.29565 -39.63921370728547 0.017811565 43.075035642054466 0.013377848 31 "" "" 0 0 1.0678319 100.04793 9.547369 31.261559 9.893857 33.95207 9.051561 1.1916385 0.84229565 "" "" "" "" "" "" """VARIABLE""" 175.87960989052456 -31.116116659283225 False False 0 False False False True False False True False "" "" "" "" "" "" 115 """V1128 Tau""" """2014AJ....148..126C""" """W""" 1 0.305371 -0.002989 12.54 """""" """DC""" 0.534 """SP""" 86.0 2.27 2.8982 0.133974 0.415779 0.312166 6200 6400 1.1 0.58 1.01 0.76 1.294 0.839 0 139.0 4.32 1 57.36569416666666 12.912178888888889 4589.567499999888
+0.7154537582555636 2068647358620451456 1091429152 304.2119657735636 41.961564147394824 4.506250818730631 0.01266456 355.81583 38.114854203352564 0.015588978 23.34087136886164 0.013553443 31 "" "" 0 0 0.9395054 204.02374 10.852742 67.61995 11.157782 72.32891 10.371186 1.2034824 0.78659534 -32.148735 12.878086 12 55.038548 37.72957 0.0 """VARIABLE""" 78.98662737963402 3.66511938889033 False False 0 True True False True False True True False 5862.1587 4.2854 -0.1786 220.8746 0.0011 0.0006 117 """V1191 Cyg""" """2014NewA...31...14O""" """W""" 1 0.31338877 0.270432 "" """""" """PHOEBE""" 0.107 """SP""" 80.76 2.183 1.939744 0.577083 0.541769 0.207822 6215 6378 1.283 0.137 1.292 0.503 2.25 0.38 0 278.0 4.446 1 304.2117379166666 41.96146027777778 4589.567499999888
+0.935458503398986 2136382948545723904 141512153 291.53600132859265 52.446300660474066 2.87953416822789 0.011277545 255.33342 -13.662682610818868 0.015992388 -56.9068061849064 0.015017431 31 "" "" 0 0 1.1130381 125.527855 10.773152 41.5581 10.987606 43.57426 10.3954 1.1913258 0.592206 "" "" "" "" "" "" """VARIABLE""" 84.06079487358619 16.240148751619397 False False 4 True True False True False True True False 6687.367 4.2459 0.1714 346.2069 0.0013 0.0007 118 """V1918 Cyg""" """2016NewA...47...57G""" """A""" 1 0.4131769 "" "" """""" """WD""" 0.278 """SP""" 80.54 2.767 2.36394 0.305128 0.473335 0.26807 7300 6784 1.302 0.362 1.362 0.762 4.719 1.101 0 "" 3.791 1 291.5361008333333 52.44655333333333 4589.567499999888
+0.07924033248633014 1852007631963153792 966177673 319.54534693103494 30.58931267003954 5.102497492209594 0.038040873 134.13197 2.126776177034406 0.030600145 -4.506509371578442 0.032156844 95 1.6637446 0.0056824787 0 0 1.0383674 777.1672 8.076293 251.14757 8.179777 263.10153 7.8717422 1.1674867 0.3080349 "" "" "" "" "" "" """VARIABLE""" 77.81047282558522 -13.042184443291813 False False 2 True True False True False True True False 7612.9453 3.8149 -1.1175 188.7878 0.0065 0.0035 119 """V2150 Cyg""" """2003A&A...412..465K""" """A""" 0 0.591856 "" "" """""" """WD""" 0.802 """SP""" 43.39 4.8 3.318 0.226844 0.389019 0.352396 8000 7920 2.35 1.885 1.982 1.786 14.446 11.268 1 "" "" 0 319.54533583333335 30.589332499999998 4589.567499999888
+0.9895524656369659 4487581018562340992 1019248858 263.48347999699524 8.165784869277152 11.01756888534892 0.018552193 593.86884 -13.009486242406886 0.017460834 -60.511067932722746 0.015694419 31 "" "" 0 0 1.0912673 474.87207 8.410369 151.72711 8.718915 169.5105 7.9265146 1.2031072 0.79240036 "" "" "" "" "" "" """VARIABLE""" 31.500485906026352 20.918590315313494 False False 0 True True False True False True True False 5665.008 4.0889 -0.8024 90.4178 0.0086 0.0047 121 """V2377 Oph""" """2011MNRAS.412.1787D""" """W""" 0 0.425406 "" "" """""" """WD""" 0.395 """SP""" 44.06 2.695 2.654028 0.05697 0.436293 0.284215 5418 5940 1.038 0.41 1.253 0.817 1.212 0.744 0 "" 4.008 0 263.4835383333333 8.166053611111112 4589.567499999888
+0.9542555089751861 4477209046201404800 816079506 277.304486104968 6.787239342293581 7.7207067365084825 0.016082404 480.07166 56.19535180303481 0.014646753 19.956513852794842 0.015138013 31 "" "" 0 0 0.9840303 197.94653 9.299467 63.817772 9.589993 71.82767 8.814458 1.2129414 0.77553463 "" "" "" "" "" "" """VARIABLE""" 36.4840212742568 8.015299302794743 False False 0 True True False True False True True False 5771.499 4.1436 -0.6411 129.0186 0.0104 0.0056 122 """V2612 Oph""" """2014AJ....148..126C""" """W""" 0 0.375307 "" "" """""" """DC""" 0.286 """SP""" 66.66 2.59 2.3956 0.220723 0.46804 0.266698 6250 6280 1.3 0.37 1.3 0.75 2.23 0.75 1 "" 3.737 1 277.3042345833333 6.787150555555556 4589.567499999888
+0.6750736437070622 894252636735896320 1332011501 114.62574331153445 33.711624436498276 10.574761094216894 0.03126387 338.24225 -36.30255669403731 0.03771654 21.543527628383266 0.034750886 31 "" "" 0 0 1.1977786 3236.9536 7.9205756 876.6805 8.120349 1047.8262 7.5581884 1.1910523 0.5621605 -3.7186024 0.18659167 11 216.69754 -0.25450778 0.42526647 """NOT_AVAILABLE""" 185.83879149820996 23.8312741653289 False False 0 False False False False False True True False 6630.2856 3.9793 -1.0758 94.2378 0.0115 0.0063 123 """V345 Gem""" """2009AJ....138..540Y""" """W""" 1 0.2747736 0.00508 1.77 """""" """WD""" 0.142 """SP""" 73.3 "" 1.9894 0.999713 0.536404 0.241367 6115 6365 "" "" "" "" "" "" 1 "" "" 1 114.62593708333331 33.71152861111111 4589.567499999888
+0.3806957208410984 2814517259052751872 105384034 351.35503532043805 15.688582203436226 6.038189532174266 0.026375167 228.93465 17.896417813848622 0.036945537 -15.68678642982297 0.023130512 31 "" "" 1 0 1.045947 174.39293 7.9736257 51.87326 8.14241 53.33726 7.7016826 1.1615467 0.4407277 "" "" "" "" "" "" """VARIABLE""" 94.39882990211969 -42.36765479080795 False False 0 True True False True False True True False 7029.3745 3.8469 -0.2185 164.5296 0.005 0.0027 124 """V351 Peg""" """2005NewA...10..163A""" """A""" 0 0.5932963 "" "" """""" """DC""" 0.36 """SP""" 63.0 3.868 2.5496 0.206535 0.450181 0.283992 7580 7559 1.627 0.586 1.872 1.192 9.945 3.988 0 "" 1.877 1 351.35495249999997 15.688651666666667 4589.567499999888
+0.31251966124649844 2852755043652569088 1543392470 356.39619882076346 25.471913040303086 4.237482656496133 0.020355085 208.17809 19.17548237227668 0.021023152 -3.462746361693211 0.013903531 31 "" "" 0 0 1.0535243 147.5571 9.050913 49.591656 9.1832905 46.740154 8.766938 1.1887424 0.41635227 "" "" "" "" "" "" """VARIABLE""" 104.71786332358927 -35.05988089607152 False False 0 True True False True False True True False 6672.35 3.8572 -0.9772 232.4243 0.0427 0.0232 125 """V357 Peg""" """2012NewA...17..603E""" """A""" 0 0.5784511 "" "" """""" """WD""" 0.401 """SP""" 73.34 3.09 2.6 0.327693 0.447628 0.298732 7000 6687 0.85 0.34 1.48 0.99 4.73 1.77 0 "" 2.645 1 356.3961041666666 25.47192833333333 4589.567499999888
+0.8090927547935455 450600038527653888 885491358 38.79880857879049 49.86030299624346 5.629796702521198 0.031345453 179.60489 49.97089451507958 0.03485279 -7.475210396698029 0.03123328 31 "" "" 1 0 1.0751176 210.46085 7.693472 67.04244 7.8295794 44.37409 7.4136724 1.1844423 0.4159069 "" "" "" "" "" "" """VARIABLE""" 139.551577276679 -9.633572847716595 False False 0 True True False True False True True False 7705.6045 3.7744 -0.5824 176.2404 0.2339 0.1253 126 """V376 And""" """2011NewA...16...12C""" """A""" 0 0.786748 "" "" """""" """WD""" 0.305 """SP""" 62.7 5.32 2.464 0.069751 0.457325 0.265235 9000 7080 2.44 0.74 2.6 1.51 40.0 5.0 0 230.0 1.824 1 38.79846375 49.86033611111111 4589.567499999888
+0.16826639356865547 157386675678054016 766685665 75.56146578577679 31.263664609577177 5.198520498894289 0.018767951 276.98926 8.410127449917628 0.020388091 -6.264535612047305 0.014962277 31 "" "" 0 0 1.011502 504.2756 8.766744 174.77254 8.994258 172.66049 8.379183 1.189618 0.6150751 "" "" "" "" "" "" """VARIABLE""" 172.7877112414222 -6.4450136159232905 False False 0 True True False True False True True False 6830.09 3.8808 -0.7422 191.3718 0.273 0.1477 127 """V402 Aur""" """2004AcA....54..299Z""" """A""" 0 0.60349918 "" "" """""" """WD""" 0.2 """SP""" 52.65 3.765 2.228035 0.030596 0.48814 0.233782 6775 6700 1.638 0.327 1.997 0.915 7.544 1.515 0 "" 2.903 0 75.56142166666665 31.26369222222222 4589.567499999888
+0.10898547181446687 1891102451510535552 1678893715 344.1287402143014 33.92001729523488 3.76886103653137 0.025632259 147.03586 6.465910793174967 0.020427912 -2.0812101410691826 0.022083413 95 1.5788122 0.004272387 0 0 1.1071612 266.92657 10.382283 88.147064 10.661525 84.05146 9.926914 1.2010193 0.73461056 "" "" "" "" "" "" """VARIABLE""" 97.22153955119899 -23.150727078128863 False False 0 True True False True False True True False 6084.421 4.1012 -0.0306 263.1617 0.0046 0.0025 128 """V404 Peg""" """2011AN....332..690G""" """A""" 0 0.41918335 "" "" """""" """WD""" 0.243 """SP""" 62.21 2.672 2.28792 0.32112 0.483358 0.258458 6340 6154 1.175 0.286 1.346 0.71 2.623 0.647 0 234.0 5.05 0 344.1287054166666 33.920026388888886 4589.567499999888
+0.1469595561751861 185042004454012032 1469378398 75.29516684890083 34.50734401855289 5.819110665330546 0.021120006 275.526 5.541866860072116 0.023465326 -7.330843639703655 0.015739145 31 "" "" 9 0 1.0888325 150.88058 10.306837 42.05815 10.591746 46.654728 9.659002 1.3222793 0.932744 "" "" "" "" "" "" """VARIABLE""" 170.06438601348512 -4.64922253911779 False False 0 True True False True False False True False "" "" "" "" "" "" 129 """V410 Aur""" """2017AJ....154...99L""" """A""" 1 0.36636259 "" "" """""" """WD""" 0.144 """SP""" 81.9 2.439 2.057 0.319156 0.518362 0.220691 5950 5898 1.27 0.18 1.37 0.59 2.1 0.37 1 "" 6.404 1 75.29513666666665 34.507376388888886 4589.567499999888
+0.39457959497307965 4291364028927627648 1244304795 293.85047100188916 5.838132881939677 4.737201962601439 0.0154435 306.74408 -6.037183221663704 0.014808177 -23.94994742556824 0.013776895 31 "" "" 0 0 0.970428 100.54059 10.597011 33.195347 10.946527 35.522198 10.1280155 1.1739606 0.818511 "" "" "" "" "" "" """VARIABLE""" 43.205828973781365 -7.031691601275145 False False 4 True True False True False True True False 5934.252 4.1106 -1.5661 209.6743 0.4117 0.2265 130 """V417 Aql""" """2011MNRAS.412.1787D""" """W""" 1 0.370314 -0.004752 42.4 """2003A&A...400..649Q""" """WD""" 0.362 """SP""" 82.47 2.699 2.54924 0.226446 0.450623 0.285385 6252 6381 1.41 0.51 1.304 0.829 2.327 1.02 0 "" 3.595 0 293.85049791666665 5.838239166666666 4589.567499999888
+0.5397072384715088 4383725101572110720 646207969 250.3368069984813 0.5077051921406486 10.374362094500793 0.02091908 495.9282 -25.485278547988464 0.027549671 22.149576049028678 0.020760516 31 "" "" 0 0 0.8451845 142.19783 8.445568 50.810265 8.746148 51.507004 7.950474 1.2139663 0.7956743 "" "" "" "" "" "" """VARIABLE""" 17.215629131877577 28.849393137250892 False False 0 True True False True False True True False 5872.4146 4.1369 0.3168 96.0813 0.001 0.0005 132 """V502 Oph""" """2016PASJ...68..102X""" """W""" 0 0.453392912 -0.014602 18.7 """""" """WD""" 0.335 """SP""" 76.4 3.038 2.469146 0.353245 0.461891 0.28512 5900 6140 1.37 0.46 1.51 0.94 2.49 1.13 1 86.0 3.045 1 250.33691999999996 0.5076066666666667 4589.567499999888
+0.2611858908874494 3115675035793113088 932761464 104.75490017297994 2.2142659918286465 1.8434865377070253 0.021036932 87.63096 -14.18605964178055 0.017518936 -8.27504058203158 0.015707053 31 "" "" 0 0 1.1202937 99.50802 13.542196 32.33453 13.9153805 34.86986 12.992534 1.2126315 0.9228468 "" "" "" "" "" "" """VARIABLE""" 211.8239230243679 2.69574690547872 False False 0 False False False True False True True False 5345.117 4.3433 -0.8694 526.8085 0.0078 0.0042 133 """V524 Mon""" """2012PASJ...64...85H""" """W""" 0 0.283616062 -1.3e-05 23.93 """""" """WD""" 0.476 """SP""" 80.47 "" 2.806345 0.080554 0.422319 0.300008 5308 5560 "" "" "" "" "" "" 0 "" "" 0 104.75496291666666 2.2143025 4589.567499999888
+0.6372887495404258 349486372256498816 337486987 27.802487537656543 43.81865905237175 4.11792693928239 0.027716924 148.57085 21.08679645157841 0.030591989 -33.79292427248022 0.017824136 31 "" "" 0 0 1.3473053 109.17094 11.257676 37.73911 11.622298 40.42715 10.659104 1.2488817 0.9631939 "" "" "" "" "" "" """VARIABLE""" 134.19675684002317 -17.741811167918488 False False 0 True True False True False False True False 5657.872 4.3299 0.7876 236.2971 0.007 0.0036 135 """V546 And""" """2015NewA...36..100G""" """W""" 1 0.3830195 -0.044323 24.43 """""" """WD""" 0.254 """SP""" 86.07 2.458 2.31418 0.300058 0.479581 0.260896 6240 6517 1.083 0.28 1.229 0.66 2.052 0.71 0 "" 3.437 0 27.8023575 43.81880916666667 4589.567499999888
+0.7740836539737479 202816984311041280 80580836 71.13761999741094 39.87530329488446 5.55994909841624 0.23090598 24.078844 25.424965668529488 0.2660266 -41.13634847743413 0.22673845 31 "" "" 0 0 10.822918 206.9707 8.244426 67.532585 8.503754 65.04911 7.7657804 1.2252731 0.7379732 "" "" "" "" "" "" """VARIABLE""" 163.79507844718037 -3.8294229739026164 False False 0 True True False True False True True False 6768.724 3.7903 -0.3665 161.2763 0.4362 0.2354 137 """V592 Per""" """2005AcA....55..389Z""" """W""" 1 0.715722 "" "" """""" """WD""" 0.389 """SP""" 89.6 4.522 2.526 0.544801 0.460271 0.307585 5800 6020 1.743 0.678 2.252 1.468 9.58 2.5 1 "" 2.066 0 71.13747249999999 39.87548611111111 4589.567499999888
+0.317828950474192 1348042457276499840 1629015373 259.51780951304625 41.84402826592648 1.100583184147253 0.23891811 4.6065288 -15.201118061692625 0.26351702 -12.874341639655906 0.27471098 31 "" "" 3 0 18.924109 179.67427 10.95422 59.909313 11.104074 63.866367 10.564654 1.2343376 0.5394192 "" "" "" "" "" "" """VARIABLE""" 66.80305957454452 34.53308554544913 False False 0 True True False True False True True False 6728.3677 3.9979 -0.3913 412.8115 0.0765 0.0412 138 """V728 Her""" """2016NewA...46...73E""" """W""" 0 0.4712889 0.016589 76.0 """""" """PHOEBE""" 0.178 """SP""" 69.3 3.22 2.084613 0.81 0.519042 0.252801 6600 6743 1.8 0.28 1.87 0.82 5.9 1.24 1 "" 2.304 1 259.5179 41.84408527777778 4589.567499999888
+0.31544352418256766 521747992852872320 187253893 28.347896651905057 70.04264303508289 5.7694643909112004 0.011491368 502.06943 19.16554125919957 0.011121121 4.565988184304164 0.013324344 31 "" "" 0 0 0.9130001 416.81357 8.980348 135.5609 9.189236 139.39485 8.616684 1.1867006 0.5725517 "" "" "" "" "" "" """VARIABLE""" 128.21062607949895 7.808400491115573 False False 0 True True False True False True True False 6460.7856 3.8433 -1.1557 172.6032 0.0321 0.0175 140 """V776 Cas""" """2016ApJ...817..133Z""" """A""" 0 0.44041574 "" 23.7 """""" """WD""" 0.13 """SP""" 55.4 2.936 1.9932 0.645645 0.532354 0.223279 7000 6920 1.55 0.2 1.71 0.73 6.93 1.17 1 "" 3.036 0 28.347647083333328 70.0426225 4589.567499999888
+0.3067670686563425 1338980488596974464 2751955 253.94946552907263 35.18258378825231 5.347352679518198 0.013226119 404.3025 -6.254433214277671 0.013610111 -18.165581644817525 0.014652907 31 "" "" 17 0 1.1044028 237.26372 10.149149 73.80132 10.446423 75.7685 9.632011 1.229265 0.81441116 "" "" "" "" "" "" """VARIABLE""" 57.86615269021259 37.90716692882163 False False 0 True True False True False True True False 5809.914 4.1839 -0.3359 186.2638 0.0111 0.006 142 """V829 Her""" """2006NewA...12..192E""" """W""" 0 0.35815069 0.007172 12.61 """""" """WD""" 0.435 """SP""" 57.2 2.61 2.695652 0.199746 0.435349 0.298838 6194 6300 1.3 0.57 1.22 0.84 1.95 0.99 0 198.0 4.379 1 253.94949916666664 35.18266444444444 4589.567499999888
+0.521886115513639 4481606508598024064 1369656823 272.33845864223196 9.151006183265896 8.69767133346297 0.017195115 505.82224 -32.64424072034231 0.01622178 0.9480171020723411 0.018530594 31 "" "" 0 0 0.97549987 91.196236 8.878592 30.125755 9.182585 31.065678 8.376909 1.2162833 0.8056755 "" "" "" "" "" "" """VARIABLE""" 36.430203955317836 13.471313449855176 False False 0 True True False True False False True False "" "" "" "" "" "" 143 """V839 Oph""" """2011MNRAS.412.1787D""" """W""" 1 0.409008 0.027994 36.7 """2010JKAS...43..201H""" """WD""" 0.305 """SP""" 80.19 2.984 2.363 0.601415 0.478945 0.289141 6381 6424 1.63 0.497 1.546 0.955 3.55 1.392 0 "" 2.695 0 272.3386054166666 9.151001944444445 4589.567499999888
+0.5529774538024652 1400549875578714240 1535296505 241.5090212035643 50.187060873126946 5.833332717962715 0.014151141 412.2164 -28.42794017870608 0.01546467 19.672961512490655 0.01885878 31 "" "" 1 0 1.0772542 103.34709 10.005785 34.307724 10.368785 37.692574 9.465038 1.2117673 0.9037466 "" "" "" "" "" "" """VARIABLE""" 78.52754964209468 46.613290503748225 False False 0 True True False True False True True False 5794.9043 4.2065 0.1942 171.0815 0.0031 0.0016 144 """V842 Her""" """2009NewA...14..321E""" """W""" 1 0.419033 0.037654 14.3 """""" """WD""" 0.259 """SP""" 78.3 2.88 2.332599 0.254273 0.476494 0.260573 5723 6020 1.45 0.38 1.47 0.81 2.08 0.77 1 177.0 3.714 1 241.5092183333333 50.18697333333333 4589.567499999888
+0.32101854714227684 3060915340941636608 1536341747 114.77001331439382 -2.6515686790697877 3.0096594850341996 0.016881669 178.27972 -19.800581805765567 0.017881988 -3.452393151200421 0.01272831 31 "" "" 0 0 1.0058985 110.159706 9.379798 37.65914 9.4944515 39.194984 9.178509 1.1592146 0.31594276 "" "" "" "" "" "" """VARIABLE""" 220.80609703324646 9.345528408458657 False False 4 True True False True False True True False 7730.175 4.0713 0.6195 327.9754 0.0032 0.0017 145 """V868 Mon""" """2015PASJ...67...98Z""" """A""" 1 0.637704468 0.081043 "" """""" """WD""" 0.373 """SP""" 83.67 4.633 2.51732 0.459621 0.459067 0.299398 7400 6484 2.389 0.891 2.331 1.562 14.702 3.893 1 "" 2.761 0 114.77010124999998 -2.651553333333333 4589.567499999888
+0.36934706630954983 6648949535618124800 401213518 272.0943184384094 -56.7671136850074 9.702863759329942 0.019295704 502.85098 -19.79315812745839 0.016603345 11.928483317636685 0.01500589 31 "" "" 0 0 0.8991278 138.91043 8.73219 44.704155 9.026568 48.70751 8.215669 1.2303526 0.81089973 "" "" "" "" "" "" """VARIABLE""" 337.16966789748625 -16.87611419277344 False False 0 True True False True False False True False 5772.26 4.1519 -0.1269 102.8152 0.0019 0.001 146 """V870 Ara""" """2007A&A...465..943S""" """W""" 1 0.399722 "" "" """""" """WD""" 0.082 """SP""" 70.0 2.59 1.849 0.984479 0.562577 0.20026 5860 6210 1.503 0.123 1.67 0.61 2.96 0.5 0 107.0 3.624 1 272.09447874999995 -56.76716666666667 4589.567499999888
+0.8842489145615896 1325067886936436224 505466397 248.75836466578136 33.21309491676181 6.643961610303423 0.08913584 74.53748 39.03148792176434 0.0928367 -39.12779146710062 0.11359825 31 "" "" 0 0 5.5596986 511.95126 7.7727013 169.61176 7.998712 150.73595 7.3840237 1.1910522 0.6146884 "" "" "" "" "" "" """VARIABLE""" 54.48314342191237 41.85365697153753 False False 1 True True False True False True True False 6442.489 3.8092 -0.0765 144.8873 0.0059 0.0032 147 """V899 Her""" """2002A&A...387..240O""" """A""" 0 0.4211722 "" 3.7 """2006NewA...12...33Q""" """WD""" 0.566 """SP""" 68.72 3.511 2.922 0.235797 0.416744 0.32281 5700 5677 2.1 1.19 1.57 1.22 2.32 1.4 1 "" "" 0 248.7581570833333 33.21326861111111 4589.567499999888
+0.13554873232524225 1407792805347385984 156171010 252.38021416414966 47.10802143741893 2.5971310971846697 0.01096111 236.94052 7.206568563839549 0.012666955 4.421057360119603 0.0134342285 31 "" "" 0 0 0.8689213 186.69492 9.429812 61.20138 9.582725 62.23648 9.125928 1.1868336 0.45679665 "" "" "" "" "" "" """VARIABLE""" 73.0711613440736 39.89029168378923 False False 4 True True False True False False True False 7326.938 3.8343 0.2317 383.0534 0.1216 0.0648 148 """V921 Her""" """2016AdAst2016E...7Z""" """A""" 0 0.8773763 0.024106 10.2 """""" """WD""" 0.226 """SP""" 75.4 5.0 2.296 0.001433 0.47799 0.241225 7700 7003 1.784 0.403 2.56 1.29 12.2 1.59 1 "" 3.044 0 252.38016708333333 47.10800166666667 4589.567499999888
+0.7126424215660326 4603986658192566144 1157059382 269.5206695968354 32.64793209111887 16.476222399714615 0.015995968 1030.0234 -33.973319767202646 0.01885048 -28.89986653566489 0.01626613 31 "" "" 0 0 0.9742803 869.02576 6.5583563 284.24805 6.7685714 182.16855 6.1812263 1.1933129 0.5873451 "" "" "" "" "" "" """VARIABLE""" 58.47570867826801 24.763809703979955 False False 0 True True False True False True True False 6442.418 3.9398 -0.2737 60.6238 0.0003 0.0002 149 """V972 Her""" """2018Ap&SS.363...34S""" """W""" 0 0.443094 "" "" """""" """PHOEBE""" 0.164 """SP""" 40.07 2.49 2.139613 0.007995 0.50174 0.220092 6046 6433 0.91 0.15 1.35 0.59 2.11 0.57 0 "" 3.425 0 269.52084874999997 32.64806027777778 4589.567499999888
+0.794049101539062 1226714132289140352 1038320679 214.35848994225492 12.567404330395698 6.664443185577959 0.016776977 397.2374 4.695123580387168 0.019368056 -49.45555137800747 0.015384148 31 "" "" 0 0 0.88784426 97.25123 10.504384 29.193121 10.913439 34.25109 9.905818 1.2280926 1.0076208 "" "" "" "" "" "" """VARIABLE""" 1.287633088368284 65.15433803406619 False False 0 True True False True False False True False "" "" "" "" "" "" 150 """VW Boo""" """2011AJ....141..147L""" """W""" 0 0.3423177 -0.012563 25.96 """""" """WD""" 0.428 """SP""" 73.81 2.382 2.694208 0.156558 0.434483 0.295389 5198 5560 1.084 0.464 1.107 0.756 0.807 0.493 0 "" 6.018 1 214.3584683333333 12.567623888888889 4589.567499999888
+0.21196060750651008 733549185449902208 4099958 165.71635706998444 30.41517389452169 8.82379183707512 0.104622394 84.33942 12.304343195541788 0.08509537 -4.764397457390595 0.098393016 31 "" "" 0 0 3.6583636 164.84969 8.03474 48.543114 8.258592 54.645313 7.6944833 1.1659622 0.5641084 "" "" "" "" "" "" """VARIABLE""" 198.5828781064803 66.03998449168509 False False 0 True True False True False True True False 6532.6475 4.0215 -0.5355 113.1778 0.0021 0.0011 152 """VW LMi""" """2013AJ....145...80D""" """A""" 0 0.4775507 "" "" """""" """DC""" 0.423 """SP""" 78.1 3.43 2.595 0.504979 0.452565 0.312844 6440 6180 1.68 0.71 1.69 1.18 4.411 1.824 1 "" 4.319 1 165.7162933333333 30.415194999999997 4589.567499999888
+0.5373357982407503 1022096392749670016 1427996380 145.93959651092428 55.952388737534136 19.266700572347492 0.01887033 1021.00494 17.168499979693237 0.017255988 -28.88598754101516 0.016563669 31 "" "" 0 0 1.0083104 151.17592 7.7452164 45.141926 8.088248 45.466164 7.2756886 1.1774266 0.8125596 "" "" "" "" "" "" """VARIABLE""" 158.92257837077457 45.902485754162804 False False 0 True True False True False False True False "" "" "" "" "" "" 154 """W UMa""" """1991ApJ...374..307L""" """W""" 1 0.33363551 "" "" """2001IBVS.5056....1P""" """LI""" 0.49 """SP""" 86.0 2.401 2.827291 0.099593 0.420927 0.303318 5746 5984 1.12 0.55 "" "" 1.216 0.732 0 "" 4.71 1 145.93945999999997 55.95251694444445 4589.567499999888
+0.11753197802519082 3835185102728741632 548945286 150.69987207017394 1.094519025473592 2.9882584870281064 0.120489664 24.800953 6.308396543835258 0.1552752 -3.6820235699897426 0.20733888 31 "" "" 46 0 6.044675 116.62694 9.934662 41.89572 10.127946 41.20639 9.486477 1.2429965 0.641469 "" "" "" "" "" "" """VARIABLE""" 238.4918451792295 41.93740202895969 False False 0 False False False True False False True False "" "" "" "" "" "" 157 """Y Sex""" """2011MNRAS.412.1787D""" """A""" 0 0.487736 -0.004752 50.0 """2003NewA....8..465Y""" """WD""" 0.195 """SP""" 79.12 2.85 2.146 0.596136 0.507078 0.251998 6650 6448 1.471 0.287 1.568 0.795 4.305 0.979 1 "" 3.754 0 150.69984374999999 1.0945352777777777 4589.567499999888
