@@ -1,7 +1,5 @@
-import numpy as np
 import pandas as pd
 from astroquery.simbad import Simbad
-import os
 
 def retrieve_coord_from_simbad(input_data, output_filename=None):
     """
@@ -20,15 +18,23 @@ def retrieve_coord_from_simbad(input_data, output_filename=None):
     simbad.ROW_LIMIT = 0
 
     try:
+        print("Starting to process input data...")
         if isinstance(input_data, str):  # Input is a filename
             try:
                 filepath = input_data
-                df = pd.read_csv(input_data)
+                if input_data.endswith('.csv'):
+                    df = pd.read_csv(input_data)
+                elif input_data.endswith('.txt'):
+                    df = pd.read_fwf(input_data, header=0)
+                    df.columns.values[0] = 'name'
+                else:
+                    print("Error: Unsupported file format. Only CSV and TXT files are supported.")
+                    return None
             except FileNotFoundError:
                 print(f"Error: File not found at {input_data}")
                 return None
             except pd.errors.ParserError:
-                print(f"Error: Could not parse CSV file at {input_data}. Check file format.")
+                print(f"Error: Could not parse file at {input_data}. Check file format.")
                 return None
         elif isinstance(input_data, pd.DataFrame):  # Input is a DataFrame
             df = input_data.copy()
@@ -37,6 +43,7 @@ def retrieve_coord_from_simbad(input_data, output_filename=None):
             print("Error: Input data must be a filename (string) or a Pandas DataFrame.")
             return None
 
+        print("Checking for 'name' column...")
         name_col_exists = any(col.lower() == 'name' for col in df.columns)
         if not name_col_exists:
             print("Error: DataFrame must contain a column named 'name' (case-insensitive).")
@@ -46,6 +53,7 @@ def retrieve_coord_from_simbad(input_data, output_filename=None):
         df = df.rename(columns={name_col: 'name'})
 
         object_names = df['name'].tolist()
+        print(f"Querying SIMBAD for {len(object_names)} objects...")
         try:
             query_result = simbad.query_objects(object_names)
         except Exception as e:
@@ -56,6 +64,7 @@ def retrieve_coord_from_simbad(input_data, output_filename=None):
             print("Error: SIMBAD query returned None. Check your input names or network connection.")
             return None
 
+        print("Converting query result to DataFrame...")
         simbad_df = query_result.to_pandas()
 
         # Ensure SCRIPT_NUMBER_ID is an integer for proper joining
@@ -87,6 +96,5 @@ def retrieve_coord_from_simbad(input_data, output_filename=None):
         return None
 
 if __name__ == "__main__":
-    df_from_csv_with_coords_no_overwrite = retrieve_coord_from_simbad("../data/only_SP_objects.csv", output_filename="../data/SP_objects_with_coord.csv")
+    df_from_csv_with_coords_no_overwrite = retrieve_coord_from_simbad("./data/debcat.txt", output_filename="./data/debcat_with_coord.csv")
 
-    
