@@ -175,5 +175,5 @@ def gaia_cross_match(input_data,
         Gaia.logout()
 
 if __name__ == "__main__":
-    results_from_file = gaia_cross_match("../data/SP_objects_with_coord.csv", radius=1, output_filename="../data/SP_cross_with_gaia.ecsv")
+    results_from_file = gaia_cross_match("./data/debcat_with_coord.csv", table_name='debcat', radius=1, output_filename="./data/debcat_cross_with_gaia.ecsv")
     

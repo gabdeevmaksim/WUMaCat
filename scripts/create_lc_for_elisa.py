@@ -3,6 +3,43 @@ from astropy.table import Table, Column
 import numpy as np
 import lightkurve as lk
 import re
+from scipy.optimize import curve_fit
+
+def gaussian(x, a, x0, sigma):
+    return a * np.exp(-(x - x0)**2 / (2 * sigma**2))
+
+def find_jdmin(table, period):
+    """
+    Finds the JDmin, which is the center of an eclipse, from the light curve data by fitting a Gaussian model.
+
+    Args:
+        table (astropy.table.Table): The light curve data table.
+        period (float): The orbital period of the light curve.
+
+    Returns:
+        float: The Julian Date (JD) corresponding to the center of the eclipse.
+    """
+    x = table['jd']
+    y = table['flux'].max() - table['flux']
+
+    # Initial guess for the parameters
+    initial_guess = [max(y), x[np.argmax(y)], 0.2 * period]
+
+    # Take points around the initial guess within 0.2 of the period
+    mask = (x > initial_guess[1] - 0.2 * period) & (x < initial_guess[1] + 0.2 * period)
+    x_fit = x[mask]
+    y_fit = y[mask]
+
+    try:
+        # Fit the Gaussian model to the data
+        popt, _ = curve_fit(gaussian, x_fit, y_fit, p0=initial_guess)
+
+        # The center of the eclipse is the mean of the Gaussian
+        jdmin = popt[1]
+        return jdmin
+    except RuntimeError:
+        print("Gaussian fit did not converge.")
+        return None
 
 def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_column='P'):
     """
@@ -17,7 +54,13 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
         list: A list of processed object names or None if there is an error.
     """
     try:
-        input_table = Table.read(input_table_filename, format='ascii.ecsv')
+        if input_table_filename.endswith('.csv'):
+            input_table = Table.read(input_table_filename, format='csv')
+        elif input_table_filename.endswith('.ecsv'):
+            input_table = Table.read(input_table_filename, format='ascii.ecsv')
+        else:
+            print("Error: Input table file must be in CSV or ECSV format.")
+            return None
 
         name_col_exists = any(col.lower() == 'name' for col in input_table.colnames)
         if not name_col_exists:
@@ -41,7 +84,6 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
             mask = input_table['name'] == name
             row = input_table[mask][0]
             period = row[period_column]
-            jd_min = row.get('jd_min')
 
             try:
                 lightcurve_files = [f for f in os.listdir(lightcurve_dir) if re.search(rf"{re.escape(name)}", f)]
@@ -54,7 +96,13 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
                 lightcurve_file = os.path.join(lightcurve_dir, lightcurve_files[0])
 
                 try:
-                    lc_table = Table.read(lightcurve_file, format="ascii.ecsv")
+                    if lightcurve_file.endswith('.csv'):
+                        lc_table = Table.read(lightcurve_file, format="csv")
+                    elif lightcurve_file.endswith('.ecsv'):
+                        lc_table = Table.read(lightcurve_file, format="ascii.ecsv")
+                    else:
+                        print(f"Error: Light curve file '{lightcurve_file}' must be in CSV or ECSV format.")
+                        continue
                 except Exception as e:
                     print(f"Error reading light curve file for '{name}': {e}")
                     continue
@@ -63,20 +111,20 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
                     print(f"Warning: No valid period provided for '{name}'. Skipping folding.")
                     continue
 
+                jd_min = find_jdmin(lc_table, period)
                 if jd_min is None:
-                    jd_min = lc_table['jd'][np.argmin(lc_table['flux'])]
-                    print(f"Warning: No 'jd_min' provided for '{name}'. Using minimum flux JD: {jd_min}")
-                    output_filename = f"tess_lc_{name}_tess_jdmin.csv"
-                else:
-                    output_filename = f"tess_lc_{name}_vsx_jdmin.csv"
+                    print(f"Warning: Could not determine 'jd_min' for '{name}'. Skipping.")
+                    continue
+                print(f"Calculated 'jd_min' for '{name}': {jd_min}")
+                output_filename = f"./data/deb_lcs/tess_lc_{name}_tess_jdmin.csv"
                 
                 try:
                     jd = lc_table['jd']
                     flux = lc_table['flux']
-                    phase = (jd - jd_min) % period
-                    phase[phase < 0] = 1 + phase[phase<0]
-                    normalized_flux = (flux - np.min(flux)) / (np.max(flux) - np.min(flux))
-                    output_table = Table([phase, normalized_flux], names=['phase', 'normalized_flux'])
+                    phase = ((jd - jd_min) / period) % 1
+                    phase[phase < 0] = 1 + phase[phase < 0]
+                    normalized_flux = flux / np.max(flux)
+                    output_table = Table([jd, flux, phase, normalized_flux], names=['jd', 'flux', 'phase', 'normalized_flux'])
                     output_table.meta['jd_min'] = jd_min
                     output_table.meta['period'] = period
                     output_table.sort('phase')
@@ -98,7 +146,7 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
         return None
 
 if __name__ == "__main__":
-    lightcurve_dir = "../tess_curves/"
-    processed_objects = fold_and_normalize_lightcurves("./data/sp_final_with_jd_min.ecsv", lightcurve_dir)
+    lightcurve_dir = "../tess_curves/output_files/"
+    processed_objects = fold_and_normalize_lightcurves("./data/debcat_with_coord.csv", lightcurve_dir, period_column='Pday')
     if processed_objects is not None:
         print(f"Processed objects: {processed_objects}")
