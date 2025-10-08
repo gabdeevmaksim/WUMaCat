@@ -104,6 +104,78 @@ plot_lightcurve('../data/wuma_lcs/tess_lc_AC Boo_tess_jdmin.csv')
 - Light curve files use consistent naming: `tess_lc_{object_name}_tess_jdmin.csv`
 - Period column name is configurable (default: 'P')
 
+## Gaia Teff Analysis Scripts
+
+### Compare catalog Teff with Gaia GSP-Phot Teff
+
+**scripts/compare_teff.py**: Compare catalog effective temperatures with Gaia measurements
+```bash
+# Compare all temperatures
+python scripts/compare_teff.py
+
+# Compare only cool stars (< 10000K)
+python scripts/compare_teff.py --teff-max 10000
+
+# Compare only hot stars (>= 10000K)
+python scripts/compare_teff.py --teff-min 10000
+
+# Compare specific temperature range
+python scripts/compare_teff.py --teff-min 5000 --teff-max 8000
+```
+
+Outputs (saved to `results/teff_comparison/`):
+- Scatter plots comparing Gaia vs catalog Teff (T1, T2, and average)
+- Distribution histograms showing differences
+- Statistical summaries
+
+### Fit polynomial correction for hot stars
+
+**scripts/fit_teff_correction.py**: Fit polynomial to correct Gaia Teff underestimation in hot stars
+```bash
+# Fit quadratic correction (default)
+python scripts/fit_teff_correction.py --degree 2
+
+# Fit linear correction
+python scripts/fit_teff_correction.py --degree 1
+
+# Fit cubic correction
+python scripts/fit_teff_correction.py --degree 3
+
+# Custom temperature threshold
+python scripts/fit_teff_correction.py --degree 2 --threshold 12000
+```
+
+- Uses average catalog Teff for binary systems
+- Outputs correction polynomial coefficients (PKL file)
+- Generates diagnostic plots showing fit quality
+- All outputs saved to `results/teff_correction/`
+
+### Apply correction to Gaia Teff
+
+**scripts/compare_teff_corrected.py**: Apply polynomial correction and compare results
+```bash
+# Apply quadratic correction
+python scripts/compare_teff_corrected.py --correction results/teff_correction/teff_correction_coeffs_deg2.pkl
+
+# Apply different degree correction
+python scripts/compare_teff_corrected.py --correction results/teff_correction/teff_correction_coeffs_deg3.pkl
+```
+
+- Applies correction only to stars above the threshold used in fitting
+- Outputs saved to `results/teff_comparison/`
+
+## Output Directory Structure
+
+```
+results/
+├── teff_comparison/          # Teff comparison plots
+│   ├── teff_comparison_*.png
+│   └── teff_comparison_corrected_*.png
+└── teff_correction/          # Correction polynomials and fits
+    ├── teff_correction_coeffs_deg*.pkl
+    └── teff_correction_fit_deg*.png
+```
+
 ## Astronomy-Specific Conventions
 
 - **JD (Julian Date)**: Standard astronomical time format
@@ -111,3 +183,6 @@ plot_lightcurve('../data/wuma_lcs/tess_lc_AC Boo_tess_jdmin.csv')
 - **Normalized flux**: Flux divided by maximum flux value
 - **W UMa systems**: Contact binary stars with periods typically < 1 day
 - **Eclipse fitting**: Uses Gaussian model to find primary minimum center
+- **Teff (Effective Temperature)**: Surface temperature in Kelvin
+- **GSP-Phot**: Gaia's General Stellar Parameterizer using photometry
+- **Temperature filtering**: Based on average catalog Teff `(T1 + T2) / 2` for binary systems
