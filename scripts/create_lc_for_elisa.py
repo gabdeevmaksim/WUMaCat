@@ -19,7 +19,14 @@ def find_jdmin(table, period):
     Returns:
         float: The Julian Date (JD) corresponding to the center of the eclipse.
     """
-    x = table['jd']
+    if 'jd' in table.colnames and 'time' in table.colnames:
+        x = table['jd'] 
+    elif 'jd' in table.colnames:
+        x = table['jd']
+    elif 'time' in table.colnames:
+        x = table['time'].to_value('mjd','float')
+    else:
+        raise ValueError("The table must contain either a 'jd' or 'time' column.")
     y = table['flux'].max() - table['flux']
 
     # Initial guess for the parameters
@@ -116,10 +123,16 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
                     print(f"Warning: Could not determine 'jd_min' for '{name}'. Skipping.")
                     continue
                 print(f"Calculated 'jd_min' for '{name}': {jd_min}")
-                output_filename = f"./data/deb_lcs/tess_lc_{name}_tess_jdmin.csv"
+                output_filename = f"./data/wuma_lcs/tess_lc_{name}_tess_jdmin.csv"
                 
                 try:
-                    jd = lc_table['jd']
+                    if 'jd' in lc_table.colnames:
+                        jd = lc_table['jd']
+                    elif 'time' in lc_table.colnames:
+                        jd = lc_table['time'].to_value('mjd', 'float')
+                    else:
+                        print(f"Error: Light curve table for '{name}' must contain either a 'jd' or 'time' column.")
+                        continue
                     flux = lc_table['flux']
                     phase = ((jd - jd_min) / period) % 1
                     phase[phase < 0] = 1 + phase[phase < 0]
@@ -146,7 +159,7 @@ def fold_and_normalize_lightcurves(input_table_filename, lightcurve_dir, period_
         return None
 
 if __name__ == "__main__":
-    lightcurve_dir = "../tess_curves/output_files/"
-    processed_objects = fold_and_normalize_lightcurves("./data/debcat_with_coord.csv", lightcurve_dir, period_column='Pday')
+    lightcurve_dir = "./only_one_obj/"
+    processed_objects = fold_and_normalize_lightcurves("./data/WUMaCat_with_coord.csv", lightcurve_dir, period_column='P')
     if processed_objects is not None:
         print(f"Processed objects: {processed_objects}")
